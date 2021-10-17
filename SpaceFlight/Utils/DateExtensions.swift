@@ -9,6 +9,10 @@ import Foundation
 
 
 extension Date {
+    /// Returns a formated date value in MM/dd/yyyy
+    ///
+    /// - Parameters:
+    ///     - dateString: The date in string format
     func getFormattedDate(dateString: String) -> String {
         let dateformat = DateFormatter()
         dateformat.dateFormat = "MM/dd/yyyy"

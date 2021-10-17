@@ -50,25 +50,11 @@ class SpaceFlightDetailViewController : UIViewController {
             guard let url = article?.url else { return }
             guard let imageURL = article?.imageURL else { return }
             imageView.downloaded(from: imageURL, contentMode: .scaleAspectFill)
-            let headAttributedText = NSMutableAttributedString(string: headTitle, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 28, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.white])
-            self.headTitle.numberOfLines = 0
-            self.headTitle.attributedText = headAttributedText
-            
-            let stringDate  = Date().getFormattedDate(dateString: subTitle)
-            let subAttributedText = NSMutableAttributedString(string: "Published on \(stringDate)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .thin), NSAttributedString.Key.foregroundColor : UIColor.white])
-            self.subTitle.numberOfLines = 0
-            self.subTitle.attributedText = subAttributedText
-            
-            let summaryAttributedText = NSMutableAttributedString(string: summary, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular), NSAttributedString.Key.foregroundColor : UIColor.white])
-            self.summary.attributedText = summaryAttributedText
-            self.urlLink = url
+            setupTitles(headTitle, subTitle, summary, url)
         }
     }
     
-    /// creates a gradient view for the navigationbar
-    func setupGradient() {
-        
-    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,14 +63,33 @@ class SpaceFlightDetailViewController : UIViewController {
         setuptopContainer()
         setupBottomContainer()
     }
-
     
+    ///  Redirects the user to the link of the story url
     @objc fileprivate func storyLink() {
         if let url = URL(string: urlLink) {
             UIApplication.shared.open(url)
         }
     }
+}
+
+extension SpaceFlightDetailViewController {
+    /// sets up the attributed text for the titles
+    fileprivate func setupTitles(_ headTitle: String, _ subTitle: String, _ summary: String, _ url: String) {
+        let headAttributedText = NSMutableAttributedString(string: headTitle, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 28, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.white])
+        self.headTitle.numberOfLines = 0
+        self.headTitle.attributedText = headAttributedText
+        
+        let stringDate  = Date().getFormattedDate(dateString: subTitle)
+        let subAttributedText = NSMutableAttributedString(string: "Published on \(stringDate)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .thin), NSAttributedString.Key.foregroundColor : UIColor.white])
+        self.subTitle.numberOfLines = 0
+        self.subTitle.attributedText = subAttributedText
+        
+        let summaryAttributedText = NSMutableAttributedString(string: summary, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular), NSAttributedString.Key.foregroundColor : UIColor.white])
+        self.summary.attributedText = summaryAttributedText
+        self.urlLink = url
+    }
     
+    /// setups the container views for the top and bottom containers
     fileprivate func setupContainerStackView() {
         let stackView = UIStackView(arrangedSubviews: [topContainer, bottomContainer])
         stackView.distribution = .fill
@@ -102,6 +107,7 @@ class SpaceFlightDetailViewController : UIViewController {
         ])
     }
     
+    /// adds the UI components for the top container
     fileprivate func setuptopContainer() {
         topContainer.addSubview(imageView)
         let navBarHeight : CGFloat = 180
@@ -136,6 +142,7 @@ class SpaceFlightDetailViewController : UIViewController {
         ])
     }
     
+    /// adds the UI components for the bottom container
     fileprivate func setupBottomContainer() {
         let blurEffectView = view.setupBlur(bounds: bottomContainer.bounds)
         bottomContainer.addSubview(blurEffectView)

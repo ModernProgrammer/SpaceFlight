@@ -8,12 +8,11 @@
 import UIKit
 
 extension UIImageView {
-    /// Downloads 
+    /// Sets the image from a given `URL` link
     ///
     /// - Parameters:
-    ///     - height: The height of the gradient
-    ///     - topColor: The top color of the gradient
-    ///     - bottomColor: The bottom color of the gradient
+    ///     - url: The `URL` of the image
+    ///     - contentMode: Aspect ratio that is set to scaleAspectFit by default
     func downloaded(from url: URL, contentMode mode: ContentMode = .scaleAspectFit) {
         contentMode = mode
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -29,6 +28,11 @@ extension UIImageView {
         }.resume()
     }
     
+    /// Sets the image from a given `link`
+    ///
+    /// - Parameters:
+    ///     - link: The `link` of the image
+    ///     - contentMode: Aspect ratio that is set to scaleAspectFit by default
     func downloaded(from link: String, contentMode mode: ContentMode = .scaleAspectFit) {
         guard let url = URL(string: link) else { return }
         downloaded(from: url, contentMode: mode)

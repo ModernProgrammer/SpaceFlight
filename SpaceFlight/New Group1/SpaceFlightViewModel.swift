@@ -19,6 +19,7 @@ class SpaceFlightViewModel  {
     let url  : String = "https://api.spaceflightnewsapi.net/v3"
     let slug : String = "/articles"
     
+    /// Hits the API Endpoint `https://api.spaceflightnewsapi.net/v3/articles` and stores the return data into `articles`
     func fetchArticles() {
         let semaphore = DispatchSemaphore (value: 0)
         var request = URLRequest(url: URL(string: "\(url)\(slug)")!,timeoutInterval: Double.infinity)
@@ -29,7 +30,7 @@ class SpaceFlightViewModel  {
                 semaphore.signal()
                 return
             }
-//            print(String(data: data, encoding: .utf8)!)
+            print(String(data: data, encoding: . utf8)!)
             do {
                 let articleModel = try? JSONDecoder().decode(Articles.self, from: data)
                 

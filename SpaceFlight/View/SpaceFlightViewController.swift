@@ -40,25 +40,6 @@ class SpaceFlightViewController: UIViewController {
         }
         viewModel.fetchArticles()
     }
-
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let scrollViewY = scrollView.contentOffset.y
-        let scrollSizeHeight = scrollView.contentSize.height
-        let scrollFrameHeight = scrollView.frame.height
-        let scrollHeight = scrollSizeHeight - scrollFrameHeight
-        var isHidden = false
-
-        if prevScrollDirection > scrollViewY && prevScrollDirection < scrollHeight {
-            isHidden = false
-        } else if prevScrollDirection < scrollViewY && scrollViewY > 0 {
-            isHidden = true
-        }
-        let userInfo : [String : Bool] = [ "isHidden" : isHidden ]
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "tabbar"), object: nil, userInfo: userInfo)
-        prevScrollDirection = scrollView.contentOffset.y
-    }
-    
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -122,5 +103,23 @@ extension SpaceFlightViewController: UICollectionViewDelegate, UICollectionViewD
         let cell = collectionView.cellForItem(at: indexPath[0]) as! SpaceFlightCell
         return cell
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollViewY = scrollView.contentOffset.y
+        let scrollSizeHeight = scrollView.contentSize.height
+        let scrollFrameHeight = scrollView.frame.height
+        let scrollHeight = scrollSizeHeight - scrollFrameHeight
+        var isHidden = false
+
+        if prevScrollDirection > scrollViewY && prevScrollDirection < scrollHeight {
+            isHidden = false
+        } else if prevScrollDirection < scrollViewY && scrollViewY > 0 {
+            isHidden = true
+        }
+        let userInfo : [String : Bool] = [ "isHidden" : isHidden ]
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "tabbar"), object: nil, userInfo: userInfo)
+        prevScrollDirection = scrollView.contentOffset.y
+    }
+    
 }
 

@@ -8,7 +8,11 @@
 import UIKit
 
 extension UITabBarController {
-    
+    /// Animates the tabbar to disappear or appear based on scroll axis
+    ///
+    /// - Parameters:
+    ///     - hidden: The Boolean value that keeps track of tabbar appearance starte
+    ///     - animated: The Boolean value that determance the animation state
     func setTabBar( hidden: Bool, animated: Bool = true, along transitionCoordinator: UIViewControllerTransitionCoordinator? = nil) {
         guard isTabBarHidden != hidden else { return }
 
