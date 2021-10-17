@@ -14,7 +14,9 @@ class ResourcesViewController : UITableViewController {
     let resources = [
         Resource(title: "Documentation", url: "https://api.spaceflightnewsapi.net/v3/documentation", image: "book"),
         Resource(title: "GitHub", url: "https://github.com/ModernProgrammer", image: "keyboard"),
-        Resource(title: "Medium", url: "https://medium.com/@diegobustamante", image: "scribble.variable")
+        Resource(title: "Medium", url: "https://medium.com/@diegobustamante", image: "m.circle"),
+        Resource(title: "Dribbble", url: "https://dribbble.com/diegoebustamante", image: "scribble.variable")
+
     ]
     
 
