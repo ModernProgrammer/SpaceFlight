@@ -12,6 +12,10 @@ class SpaceFlightDetailViewController : UIViewController {
     let bottomContainer = UIView()
     let headTitle       = UILabel()
     let subTitle        = UILabel()
+    var urlLink         = ""
+    let gradientView    = UIView()
+    var gradient        : CAGradientLayer?
+    
     let summary : UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .clear
@@ -19,9 +23,6 @@ class SpaceFlightDetailViewController : UIViewController {
         textView.isEditable = false
         return textView
     }()
-    var urlLink         = ""
-    let gradientView    = UIView()
-    var gradient        : CAGradientLayer?
     
     let imageView : UIImageView = {
         let imageView = UIImageView()
@@ -53,8 +54,6 @@ class SpaceFlightDetailViewController : UIViewController {
             setupTitles(headTitle, subTitle, summary, url)
         }
     }
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

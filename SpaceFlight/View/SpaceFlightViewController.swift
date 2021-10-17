@@ -33,6 +33,10 @@ class SpaceFlightViewController: UIViewController {
         super.viewDidLoad()
         setupUIComponents()
         setupCollectionView()
+        bindCollectionView()
+    }
+    
+    fileprivate func bindCollectionView() {
         viewModel.articles.bind { [weak self] _ in
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
