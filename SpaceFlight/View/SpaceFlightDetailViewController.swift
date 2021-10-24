@@ -24,10 +24,11 @@ class SpaceFlightDetailViewController : UIViewController {
         return textView
     }()
     
-    let imageView : UIImageView = {
-        let imageView = UIImageView()
+    let imageView : CustomImageView = {
+        let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.backgroundColor = .themeBlack
         return imageView
     }()
     
@@ -50,8 +51,8 @@ class SpaceFlightDetailViewController : UIViewController {
             guard let summary = article?.summary else { return }
             guard let url = article?.url else { return }
             guard let imageURL = article?.imageURL else { return }
-            imageView.downloaded(from: imageURL, contentMode: .scaleAspectFill)
-            setupTitles(headTitle, subTitle, summary, url)
+            setupTitles(headTitle: headTitle, subTitle: subTitle, summary: summary, url: url)
+            imageView.downloadImage(from: imageURL, contentMode: .scaleAspectFill)
         }
     }
     
@@ -73,7 +74,7 @@ class SpaceFlightDetailViewController : UIViewController {
 
 extension SpaceFlightDetailViewController {
     /// sets up the attributed text for the titles
-    fileprivate func setupTitles(_ headTitle: String, _ subTitle: String, _ summary: String, _ url: String) {
+    fileprivate func setupTitles(headTitle: String, subTitle: String, summary: String, url: String) {
         let headAttributedText = NSMutableAttributedString(string: headTitle, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 28, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.white])
         self.headTitle.numberOfLines = 0
         self.headTitle.attributedText = headAttributedText
@@ -110,10 +111,10 @@ extension SpaceFlightDetailViewController {
     fileprivate func setuptopContainer() {
         topContainer.addSubview(imageView)
         let navBarHeight : CGFloat = 180
-        let height : CGFloat = navBarHeight
-        let color = UIColor.black.withAlphaComponent(0.8).cgColor
-        let clear = UIColor.black.withAlphaComponent(0.0).cgColor
-        gradient = view.setupGradient(height: height, topColor: color,bottomColor: clear)
+        let gradientHeight : CGFloat = navBarHeight
+        let topGradientColor = UIColor.black.withAlphaComponent(0.8).cgColor
+        let bottomGradientColor = UIColor.black.withAlphaComponent(0.0).cgColor
+        gradient = view.setupGradient(height: gradientHeight, from: topGradientColor, to: bottomGradientColor)
         topContainer.addSubview(gradientView)
         NSLayoutConstraint.activate([
             gradientView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -125,6 +126,7 @@ extension SpaceFlightDetailViewController {
         headTitle.translatesAutoresizingMaskIntoConstraints = false
         subTitle.translatesAutoresizingMaskIntoConstraints  = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topContainer.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: topContainer.bottomAnchor),
@@ -143,7 +145,7 @@ extension SpaceFlightDetailViewController {
     
     /// adds the UI components for the bottom container
     fileprivate func setupBottomContainer() {
-        let blurEffectView = view.setupBlur(bounds: bottomContainer.bounds)
+        let blurEffectView = view.setupBlur(from: bottomContainer.bounds)
         bottomContainer.addSubview(blurEffectView)
         bottomContainer.addSubview(urlButton)
         bottomContainer.addSubview(summary)

@@ -8,8 +8,8 @@
 import UIKit
 
 class ResourcesViewController : UITableViewController {
-    let navTitle     = "Resources"
-    let cellId       = "cellId"
+    let navigationTitle     = "Resources"
+    let cellId              = "cellId"
 
     let resources = [
         Resource(title: "Documentation", url: "https://api.spaceflightnewsapi.net/v3/documentation", image: "book"),
@@ -22,7 +22,7 @@ class ResourcesViewController : UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavBar(prefersLargeTitles: true, navTitle: navTitle)
+        setupNavBar(largeTitles: true, title: navigationTitle)
         setupTableView()
     }
 }

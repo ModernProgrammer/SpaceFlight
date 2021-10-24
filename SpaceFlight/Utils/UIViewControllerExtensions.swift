@@ -14,8 +14,8 @@ extension UIViewController {
     /// - Parameters:
     ///     - prefersLargeTitles: The boolean if the large title is enabled for the navigationbar
     ///     - navTitle: The tint color for the navigation bar
-    func setupNavBar(prefersLargeTitles : Bool, navTitle : String) {
+    func setupNavBar(largeTitles prefersLargeTitles : Bool, title navigationTitle : String) {
         navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles
-        navigationItem.title = navTitle
+        navigationItem.title = navigationTitle
     }
 }

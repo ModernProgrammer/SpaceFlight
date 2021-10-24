@@ -12,6 +12,8 @@ import FoundationNetworking
 #endif
 
 
+
+
 class SpaceFlightViewModel  {
     var articles: Observable<[SpaceFlightCellViewModel]> = Observable([])
     
@@ -20,24 +22,34 @@ class SpaceFlightViewModel  {
     let slug : String = "/articles"
     
     /// Hits the API Endpoint `https://api.spaceflightnewsapi.net/v3/articles` and stores the return data into `articles`
-    func fetchArticles() {
+    func fetchArticles(completion: @escaping (Result<Bool, APIError>)->Void) {
         let semaphore = DispatchSemaphore (value: 0)
         var request = URLRequest(url: URL(string: "\(url)\(slug)")!,timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print(String(describing: error))
-                semaphore.signal()
+            if error != nil {
+                completion(.failure(.unableToComplete))
                 return
             }
-            print(String(data: data, encoding: . utf8)!)
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(.failure(.invalidResponse))
+                return
+            }
+
+            guard let data = data else {
+                semaphore.signal()
+                completion(.failure(.invalidData))
+                return
+            }
             do {
-                let articleModel = try? JSONDecoder().decode(Articles.self, from: data)
-                
-                self.articles.value = articleModel?.compactMap({ article in
+                let articleModel = try JSONDecoder().decode(Articles.self, from: data)
+                self.articles.value = articleModel.compactMap({ article in
                     SpaceFlightCellViewModel(id: article.id, title: article.title, url: article.url, imageURL: article.imageURL, summary: article.summary, date: article.publishedAt)
-                    
                 })
+                completion(.success(true))
+            } catch {
+                completion(.failure(.invalidData))
             }
             semaphore.signal()
         }
