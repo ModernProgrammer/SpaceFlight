@@ -8,15 +8,15 @@
 import UIKit
 
 class SpaceFlightDetailViewController : UIViewController {
-    let topContainer    = UIView()
-    let bottomContainer = UIView()
-    let headTitle       = UILabel()
-    let subTitle        = UILabel()
-    var urlLink         = ""
-    let gradientView    = UIView()
-    var gradient        : CAGradientLayer?
+    let articleImageContainer    = UIView()
+    let articleSummaryContainer  = UIView()
+    let articleTitleLabel        = UILabel()
+    let articleDateLabel         = UILabel()
+    var articleURLLink           = ""
+    let articleTitleGradientView = UIView()
+    var gradient                 : CAGradientLayer?
     
-    let summary : UITextView = {
+    let articleSummary : UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .clear
         textView.textColor = .semanticTextColor()
@@ -24,7 +24,7 @@ class SpaceFlightDetailViewController : UIViewController {
         return textView
     }()
     
-    let imageView : CustomImageView = {
+    let articleImageView : CustomImageView = {
         let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -32,7 +32,7 @@ class SpaceFlightDetailViewController : UIViewController {
         return imageView
     }()
     
-    let urlButton : UIButton = {
+    let articleURLButton : UIButton = {
         let button = UIButton(type: .system)
         button.configuration = .tinted()
         button.configuration?.title = "Story"
@@ -40,7 +40,7 @@ class SpaceFlightDetailViewController : UIViewController {
         button.configuration?.baseBackgroundColor = .systemRed
         button.configuration?.image = UIImage(systemName: "book.fill")
         button.configuration?.imagePadding = 6
-        button.addTarget(self, action: #selector(storyLink), for: .touchUpInside)
+        button.addTarget(self, action: #selector(storyURLLink), for: .touchUpInside)
         return button
     }()
     
@@ -51,8 +51,8 @@ class SpaceFlightDetailViewController : UIViewController {
             guard let summary = article?.summary else { return }
             guard let url = article?.url else { return }
             guard let imageURL = article?.imageURL else { return }
-            setupTitles(headTitle: headTitle, subTitle: subTitle, summary: summary, url: url)
-            imageView.downloadImage(from: imageURL, contentMode: .scaleAspectFill)
+            setupTitles(articleTitle: headTitle, articleDate: subTitle, articleSummary: summary, articleURL: url)
+            articleImageView.downloadImage(from: imageURL, contentMode: .scaleAspectFill)
         }
     }
     
@@ -60,45 +60,53 @@ class SpaceFlightDetailViewController : UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .clear
         setupContainerStackView()
-        setuptopContainer()
-        setupBottomContainer()
+        setupImageContainer()
+        setupSummaryContainer()
     }
-    
+}
+// MARK: -Action
+extension SpaceFlightDetailViewController {
     ///  Redirects the user to the link of the story url
-    @objc fileprivate func storyLink() {
-        if let url = URL(string: urlLink) {
+    @objc fileprivate func storyURLLink() {
+        if let url = URL(string: articleURLLink) {
             UIApplication.shared.open(url)
         }
     }
 }
 
+// MARK: -UI Functions
 extension SpaceFlightDetailViewController {
-    /// sets up the attributed text for the titles
-    fileprivate func setupTitles(headTitle: String, subTitle: String, summary: String, url: String) {
-        let headAttributedText = NSMutableAttributedString(string: headTitle, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 28, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.white])
-        self.headTitle.numberOfLines = 0
-        self.headTitle.attributedText = headAttributedText
+    /// Adds an attributed title from the article model to  `articleTitle`, `articleDate`, `articleSummary` and `articleURL`
+    /// - Parameters:
+    ///   - articleTitle: The title of the article
+    ///   - articleDate: The published date of the article
+    ///   - articleSummary: The summary of the article
+    ///   - articleURL: The URL link to the full article
+    fileprivate func setupTitles(articleTitle: String, articleDate: String, articleSummary: String, articleURL: String) {
+        let headAttributedText = NSMutableAttributedString(string: articleTitle, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 28, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.white])
+        self.articleTitleLabel.numberOfLines = 0
+        self.articleTitleLabel.attributedText = headAttributedText
         
-        let stringDate  = Date().getFormattedDate(dateString: subTitle)
+        let stringDate  = Date().getFormattedDate(dateString: articleDate)
         let subAttributedText = NSMutableAttributedString(string: "Published on \(stringDate)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .thin), NSAttributedString.Key.foregroundColor : UIColor.white])
-        self.subTitle.numberOfLines = 0
-        self.subTitle.attributedText = subAttributedText
+        self.articleDateLabel.numberOfLines = 0
+        self.articleDateLabel.attributedText = subAttributedText
         
-        let summaryAttributedText = NSMutableAttributedString(string: summary, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular), NSAttributedString.Key.foregroundColor : UIColor.white])
-        self.summary.attributedText = summaryAttributedText
-        self.urlLink = url
+        let summaryAttributedText = NSMutableAttributedString(string: articleSummary, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular), NSAttributedString.Key.foregroundColor : UIColor.white])
+        self.articleSummary.attributedText = summaryAttributedText
+        self.articleURLLink = articleURL
     }
     
-    /// setups the container views for the top and bottom containers
+    /// adds the `articleImageContainer` and `articleSummaryContainer` to view
     fileprivate func setupContainerStackView() {
-        let stackView = UIStackView(arrangedSubviews: [topContainer, bottomContainer])
+        let stackView = UIStackView(arrangedSubviews: [articleImageContainer, articleSummaryContainer])
         stackView.distribution = .fill
         stackView.axis = .vertical
         stackView.spacing = 0
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        topContainer.translatesAutoresizingMaskIntoConstraints = false
-        topContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 2/3).isActive = true
+        articleImageContainer.translatesAutoresizingMaskIntoConstraints = false
+        articleImageContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 2/3).isActive = true
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -107,62 +115,62 @@ extension SpaceFlightDetailViewController {
         ])
     }
     
-    /// adds the UI components for the top container
-    fileprivate func setuptopContainer() {
-        topContainer.addSubview(imageView)
+    /// adds the `articleImageContainer` and `articleSummaryContainer` to view
+    fileprivate func setupImageContainer() {
+        articleImageContainer.addSubview(articleImageView)
         let navBarHeight : CGFloat = 180
         let gradientHeight : CGFloat = navBarHeight
         let topGradientColor = UIColor.black.withAlphaComponent(0.8).cgColor
         let bottomGradientColor = UIColor.black.withAlphaComponent(0.0).cgColor
-        gradient = view.setupGradient(height: gradientHeight, from: topGradientColor, to: bottomGradientColor)
-        topContainer.addSubview(gradientView)
+        gradient = view.setupGradient(height: gradientHeight, startColor: topGradientColor, endColor: bottomGradientColor)
+        articleImageContainer.addSubview(articleTitleGradientView)
         NSLayoutConstraint.activate([
-            gradientView.topAnchor.constraint(equalTo: view.topAnchor),
-            gradientView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            articleTitleGradientView.topAnchor.constraint(equalTo: view.topAnchor),
+            articleTitleGradientView.leftAnchor.constraint(equalTo: view.leftAnchor),
         ])
-        gradientView.layer.insertSublayer(gradient!, at: 0)
-        topContainer.addSubview(headTitle)
-        topContainer.addSubview(subTitle)
-        headTitle.translatesAutoresizingMaskIntoConstraints = false
-        subTitle.translatesAutoresizingMaskIntoConstraints  = false
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        articleTitleGradientView.layer.insertSublayer(gradient!, at: 0)
+        articleImageContainer.addSubview(articleTitleLabel)
+        articleImageContainer.addSubview(articleDateLabel)
+        articleTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        articleDateLabel.translatesAutoresizingMaskIntoConstraints  = false
+        articleImageView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: topContainer.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: topContainer.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: topContainer.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor),
+            articleImageView.topAnchor.constraint(equalTo: articleImageContainer.topAnchor),
+            articleImageView.bottomAnchor.constraint(equalTo: articleImageContainer.bottomAnchor),
+            articleImageView.leadingAnchor.constraint(equalTo: articleImageContainer.leadingAnchor),
+            articleImageView.trailingAnchor.constraint(equalTo: articleImageContainer.trailingAnchor),
             
-            headTitle.topAnchor.constraint(equalTo: topContainer.topAnchor, constant: 20),
-            headTitle.leadingAnchor.constraint(equalTo: topContainer.leadingAnchor, constant: 20),
-            headTitle.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -20),
+            articleTitleLabel.topAnchor.constraint(equalTo: articleImageContainer.topAnchor, constant: 20),
+            articleTitleLabel.leadingAnchor.constraint(equalTo: articleImageContainer.leadingAnchor, constant: 20),
+            articleTitleLabel.trailingAnchor.constraint(equalTo: articleImageContainer.trailingAnchor, constant: -20),
             
-            subTitle.topAnchor.constraint(equalTo: headTitle.bottomAnchor, constant: 10),
-            subTitle.leadingAnchor.constraint(equalTo: topContainer.leadingAnchor, constant: 20),
-            subTitle.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -20),
+            articleDateLabel.topAnchor.constraint(equalTo: articleTitleLabel.bottomAnchor, constant: 10),
+            articleDateLabel.leadingAnchor.constraint(equalTo: articleImageContainer.leadingAnchor, constant: 20),
+            articleDateLabel.trailingAnchor.constraint(equalTo: articleImageContainer.trailingAnchor, constant: -20),
         ])
     }
     
-    /// adds the UI components for the bottom container
-    fileprivate func setupBottomContainer() {
-        let blurEffectView = view.setupBlur(from: bottomContainer.bounds)
-        bottomContainer.addSubview(blurEffectView)
-        bottomContainer.addSubview(urlButton)
-        bottomContainer.addSubview(summary)
+    /// adds the `articleURLButton` and `articleSummary` to the articleSummary container with a blur background
+    fileprivate func setupSummaryContainer() {
+        let blurEffectView = view.setupBlur(from: articleSummaryContainer.bounds)
+        articleSummaryContainer.addSubview(blurEffectView)
+        articleSummaryContainer.addSubview(articleURLButton)
+        articleSummaryContainer.addSubview(articleSummary)
     
-        urlButton.translatesAutoresizingMaskIntoConstraints = false
-        summary.translatesAutoresizingMaskIntoConstraints   = false
+        articleURLButton.translatesAutoresizingMaskIntoConstraints = false
+        articleSummary.translatesAutoresizingMaskIntoConstraints   = false
 
         NSLayoutConstraint.activate([
-            urlButton.bottomAnchor.constraint(equalTo: bottomContainer.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            urlButton.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 20),
-            urlButton.widthAnchor.constraint(equalToConstant: view.frame.width/3),
-            urlButton.heightAnchor.constraint(equalToConstant: 44),
+            articleURLButton.bottomAnchor.constraint(equalTo: articleSummaryContainer.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            articleURLButton.leadingAnchor.constraint(equalTo: articleSummaryContainer.leadingAnchor, constant: 20),
+            articleURLButton.widthAnchor.constraint(equalToConstant: view.frame.width/3),
+            articleURLButton.heightAnchor.constraint(equalToConstant: 44),
             
-            summary.topAnchor.constraint(equalTo: bottomContainer.topAnchor, constant: 20),
-            summary.bottomAnchor.constraint(equalTo: urlButton.topAnchor, constant: -20),
-            summary.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 20),
-            summary.trailingAnchor.constraint(equalTo: bottomContainer.trailingAnchor, constant: -20),
+            articleSummary.topAnchor.constraint(equalTo: articleSummaryContainer.topAnchor, constant: 20),
+            articleSummary.bottomAnchor.constraint(equalTo: articleURLButton.topAnchor, constant: -20),
+            articleSummary.leadingAnchor.constraint(equalTo: articleSummaryContainer.leadingAnchor, constant: 20),
+            articleSummary.trailingAnchor.constraint(equalTo: articleSummaryContainer.trailingAnchor, constant: -20),
         ])
     }
 }

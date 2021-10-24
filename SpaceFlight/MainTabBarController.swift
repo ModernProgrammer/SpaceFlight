@@ -11,13 +11,15 @@ class MainTabBarController : UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpControllers()
-        setupMenuBar()
+        setupTabBarProperties()
     }
     
-    fileprivate func setupMenuBar() {
+    /// Overrides the default UITabBar properties to a custom propertie
+    fileprivate func setupTabBarProperties() {
         tabBar.tintColor = UIColor.systemRed
     }
     
+    /// Creates the viewControllers for the tabbar for `SpaceFlightViewController` and `ResourcesViewController`
     fileprivate func setUpControllers() {
         let home = SpaceFlightViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let resources = ResourcesViewController(style: .insetGrouped)
@@ -26,6 +28,12 @@ class MainTabBarController : UITabBarController {
         viewControllers = [homeViewController, resourcesViewController]
     }
     
+    /// Creates a UINavigationController template to insert into the tabbar viewControllers
+    /// - Parameters:
+    ///   - unselectedImage: The `image` presented on the `tabbar` when the item isnt selected
+    ///   - selectedImage: The `image` presented on the `tabbar` when the item is selected
+    ///   - rootViewController: The `ViewController` used to wrap into a `UINavigationController`
+    /// - Returns: A `UINavigationView` controller from the passed `rootViewController`
     fileprivate func templateNavController(unselectedImage: UIImage?, selectedImage: UIImage?, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
         let viewController = rootViewController
         let viewNavController = UINavigationController(rootViewController: viewController)

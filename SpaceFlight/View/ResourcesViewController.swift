@@ -10,15 +10,12 @@ import UIKit
 class ResourcesViewController : UITableViewController {
     let navigationTitle     = "Resources"
     let cellId              = "cellId"
-
     let resources = [
         Resource(title: "Documentation", url: "https://api.spaceflightnewsapi.net/v3/documentation", image: "book"),
         Resource(title: "GitHub", url: "https://github.com/ModernProgrammer", image: "keyboard"),
         Resource(title: "Medium", url: "https://medium.com/@diegobustamante", image: "m.circle"),
         Resource(title: "Dribbble", url: "https://dribbble.com/diegoebustamante", image: "scribble.variable")
-
     ]
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +24,7 @@ class ResourcesViewController : UITableViewController {
     }
 }
 
+// MARK: - UI Functions
 extension ResourcesViewController {
     func setupTableView() {
         tableView.register(ResourceCell.self, forCellReuseIdentifier: cellId)
@@ -43,7 +41,7 @@ extension ResourcesViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ResourceCell
-        cell.row.resourceCellRowViewModel.resource = resources[indexPath.row]
+        cell.resourceRow.resourceCellRowViewModel.resource = resources[indexPath.row]
         return cell
     }
     

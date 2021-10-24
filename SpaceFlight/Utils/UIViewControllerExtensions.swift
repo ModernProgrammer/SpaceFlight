@@ -8,12 +8,10 @@
 import UIKit
 
 extension UIViewController {
-    /// Returns a custom navigationBar
-    /// from the given components.
-    ///
+    /// Sets up a custom `UINavigationBar`
     /// - Parameters:
-    ///     - prefersLargeTitles: The boolean if the large title is enabled for the navigationbar
-    ///     - navTitle: The tint color for the navigation bar
+    ///   - prefersLargeTitles: The boolean if the large title is enabled for the navigationbar
+    ///   - navigationTitle: The tint color for the navigation bar
     func setupNavBar(largeTitles prefersLargeTitles : Bool, title navigationTitle : String) {
         navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles
         navigationItem.title = navigationTitle

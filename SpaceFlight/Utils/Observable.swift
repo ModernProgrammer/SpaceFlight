@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Obserable
 class Observable<T> {
     var value: T? {
         didSet {
@@ -19,7 +20,9 @@ class Observable<T> {
     }
     
     private var listener: ((T?) -> Void)?
-
+    
+    /// Binds and add a listener to a generic
+    /// - Parameter listener: gets called anytime the generic value changes
     func bind(_ listener: @escaping (T?) -> Void) {
         listener(value)
         self.listener = listener

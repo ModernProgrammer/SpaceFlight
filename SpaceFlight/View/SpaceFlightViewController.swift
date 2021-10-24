@@ -7,41 +7,61 @@
 
 import UIKit
 
-// Controller
+// Homes
 class SpaceFlightViewController: UICollectionViewController {
-    private var prevScrollDirection: CGFloat = 0
     let cellId                 = "cellId"
     let navigationTitle        = "Space Flight"
     var apiLoadingSpinner      = UIActivityIndicatorView(style: .large)
     let spaceFlightViewModel   = SpaceFlightViewModel()
     let errorMessage           = UILabel()
-
-        
-//    lazy var collectionView : UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//        let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
-
-//        return collectionView
-//    }()
-    
-//    UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupSpinner()
-        setupUIComponents()
-        setupCollectionView()
+        view.backgroundColor = .backgroundColor()
+        setupNavBar(largeTitles: true, title: navigationTitle)
+        setupAPILoadingSpinner()
+        bindArticleModeltoCollectionView()
         fetchArticlesAPI()
-        collectionView.isPagingEnabled = false
-        collectionView.backgroundColor = .clear
-        collectionView.alwaysBounceVertical = true
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.contentInsetAdjustmentBehavior = .automatic
-        collectionView.register(SpaceFlightCell.self, forCellWithReuseIdentifier: cellId)
+        setupCollectionViewProperties()
+    }
+}
+
+// MARK: -SpaceFlightViewModel Functions
+extension SpaceFlightViewController {
+    /// Binds the Article Observable to the collection view
+    fileprivate func bindArticleModeltoCollectionView() {
+        self.spaceFlightViewModel.articles.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
     }
     
-    func setupSpinner() {
+    /// Makes an API request to the SpaceFlight API
+    fileprivate func fetchArticlesAPI() {
+        // run article binding and fetchArticles in the background thread
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.spaceFlightViewModel.fetchArticles { result in
+                DispatchQueue.main.async {
+                    self.removeFromView(self.apiLoadingSpinner)
+                }
+                switch result {
+                case .success(_):
+                    return
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.showErrorMessage(from: error.rawValue)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: -UI Functions
+extension SpaceFlightViewController {
+    /// Sets up the apiLoadingSpinner to the view
+    func setupAPILoadingSpinner() {
         view.addSubview(apiLoadingSpinner)
         apiLoadingSpinner.startAnimating()
         apiLoadingSpinner.translatesAutoresizingMaskIntoConstraints = false
@@ -52,41 +72,16 @@ class SpaceFlightViewController: UICollectionViewController {
             apiLoadingSpinner.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
-    
-    /// Removes the `View` on the UIImageView
+
+    /// Removes a subview from the superview
+    /// - Parameter subView: the subview being removed
     func removeFromView(_ subView: UIView) {
         subView.removeFromSuperview()
     }
     
-    fileprivate func fetchArticlesAPI() {
-        // run article binding and fetchArticles in the background thread
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.spaceFlightViewModel.articles.bind { [weak self] _ in
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadData()
-                }
-            }
-            
-            self.spaceFlightViewModel.fetchArticles { result in
-                DispatchQueue.main.async {
-                    self.removeFromView(self.apiLoadingSpinner)
-                }
-                switch result {
-
-                case .success(_):
-                    // Success
-                    print()
-                case .failure(let error):
-                    print("Failure")
-                    DispatchQueue.main.async {
-                        self.removeFromView(self.apiLoadingSpinner)
-                        self.showErrorMessage(from: error.rawValue)
-                    }
-                }
-            }
-        }
-    }
     
+    /// Displays an Error message for the user
+    /// - Parameter error: error message of the
     func showErrorMessage(from error : String) {
         view.addSubview(errorMessage)
         errorMessage.translatesAutoresizingMaskIntoConstraints = false
@@ -103,24 +98,15 @@ class SpaceFlightViewController: UICollectionViewController {
         errorMessage.numberOfLines = 0
         errorMessage.textAlignment = .center
     }
-}
-// MARK: -UI Functions
-extension SpaceFlightViewController {
-    /// setups up basic UI
-    func setupUIComponents() {
-        setupNavBar(largeTitles: true, title: navigationTitle)
-        view.backgroundColor = .backgroundColor()
-    }
     
-    /// Adds the collectionView to the view and anchors it using autolayout constraints
-    func setupCollectionView() {
-        view.addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor)
-        ])
+    /// Configures the collectionView properties
+    fileprivate func setupCollectionViewProperties() {
+        collectionView.isPagingEnabled = false
+        collectionView.backgroundColor = .clear
+        collectionView.alwaysBounceVertical = true
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.contentInsetAdjustmentBehavior = .automatic
+        collectionView.register(SpaceFlightArticleCell.self, forCellWithReuseIdentifier: cellId)
     }
 }
 
@@ -131,7 +117,7 @@ extension SpaceFlightViewController : UICollectionViewDelegateFlowLayout {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SpaceFlightCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SpaceFlightArticleCell
         cell.article = spaceFlightViewModel.articles.value?[indexPath.row]
         return cell
     }

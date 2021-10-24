@@ -8,11 +8,9 @@
 import UIKit
 
 extension UIView {
-    /// Returns a gradient layer from two colors
-    /// from the given components.
-    ///
-    /// - Parameters:
-    ///     - bounds: The bounds of the gradient
+    /// Creates a blur view using `UIVisualEffectView`
+    /// - Parameter bounds: The desired bounds size
+    /// - Returns: `UIVisualEffectView` based on the bounds from the user
     func setupBlur(from bounds: CGRect) -> UIVisualEffectView {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -21,14 +19,13 @@ extension UIView {
         return blurEffectView
     }
     
-    /// Returns a gradient layer from two colors
-    /// from the given components.
-    ///
+    /// Creates a`CAGradientLayer` from two different CGColors
     /// - Parameters:
-    ///     - height: The height of the gradient
-    ///     - topColor: The top color of the gradient
-    ///     - bottomColor: The bottom color of the gradient
-    func setupGradient(height: CGFloat, from topColor: CGColor, to bottomColor: CGColor) ->  CAGradientLayer {
+    ///   - height: The desired `height` of the gradient
+    ///   - topColor: The top color of the gradient
+    ///   - bottomColor: The bottom color of the gradient
+    /// - Returns: `CAGradientLayer` from two different CGColors
+    func setupGradient(height: CGFloat, startColor topColor: CGColor, endColor bottomColor: CGColor) ->  CAGradientLayer {
          let gradient: CAGradientLayer = CAGradientLayer()
          gradient.colors = [topColor,bottomColor]
          gradient.locations = [0.0 , 1.0]

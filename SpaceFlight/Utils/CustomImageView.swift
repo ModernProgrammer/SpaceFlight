@@ -14,10 +14,9 @@ class CustomImageView: UIImageView {
     var imageLoadingSpinner = UIActivityIndicatorView(style: .large)
 
     /// Gets the image from a given `URL` link
-    ///
     /// - Parameters:
-    ///     - urlString: The `URL`string  of the image
-    ///     - contentMode: Aspect ratio that is set to scaleAspectFit by default
+    ///   - urlString: The `URL`string  of the image
+    ///   - mode: Aspect ratio that is set to scaleAspectFit by default
     func downloadImage(from urlString: String, contentMode mode: ContentMode = .scaleAspectFit) {
         setupSpinner()
         contentMode = mode
@@ -26,7 +25,7 @@ class CustomImageView: UIImageView {
         imageUrlString = urlString
         // Checks to see if image was cache
         if let imageFromCache = imageCache.object(forKey: urlString as NSString) as? UIImage {
-            removeFromView(imageLoadingSpinner)
+            removeFromView(view: imageLoadingSpinner)
             self.image = imageFromCache
             return
         }
@@ -43,7 +42,7 @@ class CustomImageView: UIImageView {
                     self?.image = imageToCache
                 }
                 imageCache.setObject(imageToCache, forKey: urlString as NSString)
-                self!.removeFromView(self!.imageLoadingSpinner)
+                self!.removeFromView(view: self!.imageLoadingSpinner)
             }
         }.resume()
     }
@@ -63,8 +62,8 @@ class CustomImageView: UIImageView {
     }
     
     /// Removes the `UIActivityIndicatorView` on the UIImageView
-    func removeFromView(_ view: UIView) {
-        view.removeFromSuperview()
+    func removeFromView(view subView: UIView) {
+        subView.removeFromSuperview()
     }
 }
 

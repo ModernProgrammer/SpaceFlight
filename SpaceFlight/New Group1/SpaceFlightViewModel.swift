@@ -11,9 +11,6 @@ import Foundation
 import FoundationNetworking
 #endif
 
-
-
-
 class SpaceFlightViewModel  {
     var articles: Observable<[SpaceFlightCellViewModel]> = Observable([])
     
@@ -22,6 +19,7 @@ class SpaceFlightViewModel  {
     let slug : String = "/articles"
     
     /// Hits the API Endpoint `https://api.spaceflightnewsapi.net/v3/articles` and stores the return data into `articles`
+    /// - Parameter completion: Returns a boolean determing if the call was successful and return an APIError type with the description if it fails
     func fetchArticles(completion: @escaping (Result<Bool, APIError>)->Void) {
         let semaphore = DispatchSemaphore (value: 0)
         var request = URLRequest(url: URL(string: "\(url)\(slug)")!,timeoutInterval: Double.infinity)
@@ -42,6 +40,7 @@ class SpaceFlightViewModel  {
                 completion(.failure(.invalidData))
                 return
             }
+            
             do {
                 let articleModel = try JSONDecoder().decode(Articles.self, from: data)
                 self.articles.value = articleModel.compactMap({ article in

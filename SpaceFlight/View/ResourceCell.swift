@@ -23,11 +23,23 @@ struct ResourceCellRowView: View {
 
 class ResourceCell: UITableViewCell {
     var resourceCellRowViewModel = ResourceCellRowViewModel()
-    lazy var row =  ResourceCellRowView(resourceCellRowViewModel: resourceCellRowViewModel)
+    lazy var resourceRow =  ResourceCellRowView(resourceCellRowViewModel: resourceCellRowViewModel)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        let hostingController = UIHostingController(rootView: row)
+        setupHostingController()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - UI Functions
+extension ResourceCell {
+    /// Sets up the SwiftUI UIHostingController
+    fileprivate func setupHostingController() {
+        let hostingController = UIHostingController(rootView: resourceRow)
         hostingController.view.backgroundColor = .clear
         addSubview(hostingController.view)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -37,10 +49,6 @@ class ResourceCell: UITableViewCell {
             hostingController.view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             hostingController.view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

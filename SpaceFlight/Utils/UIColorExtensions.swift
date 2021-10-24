@@ -13,14 +13,13 @@ extension UIColor {
     /// Returns an off black color
     static let themeBlack = UIColor.rgb(red: 30, green: 30, blue: 30, alpha: 1)
     
-    /// Returns the UIColor RGB value
-    /// from the given components.
-    ///
+    /// Creates a `UIColor` RGB value by simplifing the RBG values
     /// - Parameters:
-    ///     - red: The CGFloat value for red
-    ///     - green: The CGFloat value for green
-    ///     - blue: The CGFloat value for blue
-    ///     - alpha: The CGFloat value for alpha intensity
+    ///   - red: The CGFloat value for red
+    ///   - green: The CGFloat value for green
+    ///   - blue: The CGFloat value for blue
+    ///   - alpha: The CGFloat value for alpha intensity
+    /// - Returns: a `UIColor`
     static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: alpha)
     }
