@@ -12,22 +12,14 @@ class MainTabBarController : UITabBarController {
         super.viewDidLoad()
         setUpControllers()
         setupMenuBar()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: Notification.Name(rawValue: "tabbar"), object: nil)
-
     }
     
     fileprivate func setupMenuBar() {
         tabBar.tintColor = UIColor.systemRed
     }
     
-    
-    @objc func notificationReceived(_ notification: Notification) {
-        guard let isHidden = notification.userInfo?["isHidden"] as? Bool else { return }
-        self.setTabBar(hidden: isHidden)
-    }
-    
     fileprivate func setUpControllers() {
-        let home = SpaceFlightViewController()
+        let home = SpaceFlightViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let resources = ResourcesViewController(style: .insetGrouped)
         let homeViewController = templateNavController(unselectedImage: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"),rootViewController: home)
         let resourcesViewController = templateNavController(unselectedImage: UIImage(systemName: "gear"), selectedImage: UIImage(systemName: "gear.fill"), rootViewController: resources)

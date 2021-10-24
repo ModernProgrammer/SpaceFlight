@@ -8,29 +8,24 @@
 import UIKit
 
 // Controller
-class SpaceFlightViewController: UIViewController {
+class SpaceFlightViewController: UICollectionViewController {
     private var prevScrollDirection: CGFloat = 0
     let cellId                 = "cellId"
     let navigationTitle        = "Space Flight"
     var apiLoadingSpinner      = UIActivityIndicatorView(style: .large)
     let spaceFlightViewModel   = SpaceFlightViewModel()
-    let errorMessage             = UILabel()
+    let errorMessage           = UILabel()
 
         
-    lazy var collectionView : UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.isPagingEnabled = false
-        collectionView.backgroundColor = .clear
-        collectionView.alwaysBounceVertical = false
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.contentInsetAdjustmentBehavior = .automatic
-        collectionView.register(SpaceFlightCell.self, forCellWithReuseIdentifier: cellId)
-        return collectionView
-    }()
+//    lazy var collectionView : UICollectionView = {
+//        let layout = UICollectionViewFlowLayout()
+//        layout.scrollDirection = .vertical
+//        let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
+
+//        return collectionView
+//    }()
+    
+//    UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +33,12 @@ class SpaceFlightViewController: UIViewController {
         setupUIComponents()
         setupCollectionView()
         fetchArticlesAPI()
+        collectionView.isPagingEnabled = false
+        collectionView.backgroundColor = .clear
+        collectionView.alwaysBounceVertical = true
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.contentInsetAdjustmentBehavior = .automatic
+        collectionView.register(SpaceFlightCell.self, forCellWithReuseIdentifier: cellId)
     }
     
     func setupSpinner() {
@@ -53,8 +54,8 @@ class SpaceFlightViewController: UIViewController {
     }
     
     /// Removes the `View` on the UIImageView
-    func removeFromView(_ view: UIView) {
-        view.removeFromSuperview()
+    func removeFromView(_ subView: UIView) {
+        subView.removeFromSuperview()
     }
     
     fileprivate func fetchArticlesAPI() {
@@ -71,7 +72,7 @@ class SpaceFlightViewController: UIViewController {
                     self.removeFromView(self.apiLoadingSpinner)
                 }
                 switch result {
-                    
+
                 case .success(_):
                     // Success
                     print()
@@ -102,10 +103,6 @@ class SpaceFlightViewController: UIViewController {
         errorMessage.numberOfLines = 0
         errorMessage.textAlignment = .center
     }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 }
 // MARK: -UI Functions
 extension SpaceFlightViewController {
@@ -128,12 +125,12 @@ extension SpaceFlightViewController {
 }
 
 // MARK: -UICollectionView Functions
-extension SpaceFlightViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+extension SpaceFlightViewController : UICollectionViewDelegateFlowLayout {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return spaceFlightViewModel.articles.value?.count ?? 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SpaceFlightCell
         cell.article = spaceFlightViewModel.articles.value?[indexPath.row]
         return cell
@@ -153,34 +150,10 @@ extension SpaceFlightViewController: UICollectionViewDelegate, UICollectionViewD
         return 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let viewController = SpaceFlightDetailViewController()
         viewController.article = spaceFlightViewModel.articles.value?[indexPath.row]
         present(viewController, animated: true, completion: nil)
     }
-    
-    func selectedCellView() -> SpaceFlightCell? {
-        guard let indexPath = collectionView.indexPathsForSelectedItems else { return nil }
-        let cell = collectionView.cellForItem(at: indexPath[0]) as! SpaceFlightCell
-        return cell
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let scrollViewY = scrollView.contentOffset.y
-        let scrollSizeHeight = scrollView.contentSize.height
-        let scrollFrameHeight = scrollView.frame.height
-        let scrollHeight = scrollSizeHeight - scrollFrameHeight
-        var isHidden = false
-
-        if prevScrollDirection > scrollViewY && prevScrollDirection < scrollHeight {
-            isHidden = false
-        } else if prevScrollDirection < scrollViewY && scrollViewY > 0 {
-            isHidden = true
-        }
-        let userInfo : [String : Bool] = [ "isHidden" : isHidden ]
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "tabbar"), object: nil, userInfo: userInfo)
-        prevScrollDirection = scrollView.contentOffset.y
-    }
-    
 }
 
