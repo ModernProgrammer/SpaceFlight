@@ -7,21 +7,20 @@
 
 import UIKit
 
-let imageCache = NSCache<AnyObject, AnyObject>()
-
 class CustomImageView: UIImageView {
+    let imageCache = NSCache<AnyObject, AnyObject>()
     var imageUrlString: String?
     var imageLoadingSpinner = UIActivityIndicatorView(style: .large)
 
     /// Gets the image from a given `URL` link
     /// - Parameters:
-    ///   - urlString: The `URL`string  of the image
+    ///   - urlString: The `URL`string of the image
     ///   - mode: Aspect ratio that is set to scaleAspectFit by default
     func downloadImage(from urlString: String, contentMode mode: ContentMode = .scaleAspectFit) {
         setupSpinner()
         contentMode = mode
         image = nil
-        let url = URL(string: urlString)
+        guard let url = URL(string: urlString) else { return }
         imageUrlString = urlString
         // Checks to see if image was cache
         if let imageFromCache = imageCache.object(forKey: urlString as NSString) as? UIImage {
@@ -31,7 +30,8 @@ class CustomImageView: UIImageView {
         }
         
         // dataTask is called if the image has not been cached
-        URLSession.shared.dataTask(with: url!) { data, _, error in
+        // TODO: Set a timeout
+        URLSession.shared.dataTask(with: url) { data, _, error in
             guard
                 let data = data, error == nil
                 else { return }
@@ -41,10 +41,12 @@ class CustomImageView: UIImageView {
                 if self?.imageUrlString == urlString {
                     self?.image = imageToCache
                 }
-                imageCache.setObject(imageToCache, forKey: urlString as NSString)
-                self!.removeFromView(view: self!.imageLoadingSpinner)
+                guard let self = self else { return }
+                self.imageCache.setObject(imageToCache, forKey: urlString as NSString)
+                self.removeFromView(view: self.imageLoadingSpinner)
             }
-        }.resume()
+        }
+        .resume()
     }
     
     /// Sets up the `UIActivityIndicatorView` on the UIImageView
@@ -66,4 +68,3 @@ class CustomImageView: UIImageView {
         subView.removeFromSuperview()
     }
 }
-

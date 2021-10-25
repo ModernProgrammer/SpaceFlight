@@ -9,11 +9,11 @@ import UIKit
 
 // Homes
 class SpaceFlightViewController: UICollectionViewController {
-    let cellId                 = "cellId"
-    let navigationTitle        = "Space Flight"
-    var apiLoadingSpinner      = UIActivityIndicatorView(style: .large)
-    let spaceFlightViewModel   = SpaceFlightViewModel()
-    let errorMessage           = UILabel()
+    let cellId = "cellId"
+    let navigationTitle = "Space Flight"
+    var apiLoadingSpinner = UIActivityIndicatorView(style: .large)
+    let spaceFlightViewModel = SpaceFlightViewModel()
+    let errorMessage = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +26,7 @@ class SpaceFlightViewController: UICollectionViewController {
     }
 }
 
-// MARK: -SpaceFlightViewModel Functions
+// MARK: - SpaceFlightViewModel Functions
 extension SpaceFlightViewController {
     /// Binds the Article Observable to the collection view
     fileprivate func bindArticleModeltoCollectionView() {
@@ -58,7 +58,7 @@ extension SpaceFlightViewController {
     }
 }
 
-// MARK: -UI Functions
+// MARK: - UI Functions
 extension SpaceFlightViewController {
     /// Sets up the apiLoadingSpinner to the view
     func setupAPILoadingSpinner() {
@@ -82,7 +82,7 @@ extension SpaceFlightViewController {
     
     /// Displays an Error message for the user
     /// - Parameter error: error message of the
-    func showErrorMessage(from error : String) {
+    func showErrorMessage(from error: String) {
         view.addSubview(errorMessage)
         errorMessage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -91,9 +91,14 @@ extension SpaceFlightViewController {
             errorMessage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             errorMessage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
-        let attributedText = NSMutableAttributedString(string: "Error\n", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 28, weight: .regular), NSAttributedString.Key.foregroundColor : UIColor.systemRed])
-        attributedText.append(NSMutableAttributedString(string: error, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .thin), NSAttributedString.Key.foregroundColor : UIColor.systemRed]))
-        
+        let attributedText = NSMutableAttributedString(string: "Error\n", attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 28, weight: .regular),
+            NSAttributedString.Key.foregroundColor: UIColor.systemRed
+        ])
+        attributedText.append(NSMutableAttributedString(string: error, attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .thin),
+            NSAttributedString.Key.foregroundColor: UIColor.systemRed
+        ]))
         errorMessage.attributedText = attributedText
         errorMessage.numberOfLines = 0
         errorMessage.textAlignment = .center
@@ -110,8 +115,8 @@ extension SpaceFlightViewController {
     }
 }
 
-// MARK: -UICollectionView Functions
-extension SpaceFlightViewController : UICollectionViewDelegateFlowLayout {
+// MARK: - UICollectionView Functions
+extension SpaceFlightViewController: UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return spaceFlightViewModel.articles.value?.count ?? 0
     }

@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ResourcesViewController : UITableViewController {
-    let navigationTitle     = "Resources"
-    let cellId              = "cellId"
+class ResourcesViewController: UITableViewController {
+    let navigationTitle = "Resources"
+    let cellId = "cellId"
     let resources = [
         Resource(title: "Documentation", url: "https://api.spaceflightnewsapi.net/v3/documentation", image: "book"),
         Resource(title: "GitHub", url: "https://github.com/ModernProgrammer", image: "keyboard"),
@@ -29,10 +29,10 @@ extension ResourcesViewController {
     func setupTableView() {
         tableView.register(ResourceCell.self, forCellReuseIdentifier: cellId)
         tableView.showsHorizontalScrollIndicator = false
-        tableView.showsVerticalScrollIndicator   = false
-        tableView.alwaysBounceVertical           = true
-        tableView.dataSource                     = self
-        tableView.delegate                       = self
+        tableView.showsVerticalScrollIndicator = false
+        tableView.alwaysBounceVertical = true
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

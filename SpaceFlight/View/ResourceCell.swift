@@ -23,7 +23,7 @@ struct ResourceCellRowView: View {
 
 class ResourceCell: UITableViewCell {
     var resourceCellRowViewModel = ResourceCellRowViewModel()
-    lazy var resourceRow =  ResourceCellRowView(resourceCellRowViewModel: resourceCellRowViewModel)
+    lazy var resourceRow = ResourceCellRowView(resourceCellRowViewModel: resourceCellRowViewModel)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

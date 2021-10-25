@@ -7,22 +7,21 @@
 
 import UIKit
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
-class SpaceFlightViewModel  {
+class SpaceFlightViewModel {
     var articles: Observable<[SpaceFlightCellViewModel]> = Observable([])
     
     /// Documentation: `https://api.spaceflightnewsapi.net/v3/documentation`
-    let url  : String = "https://api.spaceflightnewsapi.net/v3"
-    let slug : String = "/articles"
+    let url: String = "https://api.spaceflightnewsapi.net/v3"
+    let slug: String = "/articles"
     
     /// Hits the API Endpoint `https://api.spaceflightnewsapi.net/v3/articles` and stores the return data into `articles`
-    /// - Parameter completion: Returns a boolean determing if the call was successful and return an APIError type with the description if it fails
-    func fetchArticles(completion: @escaping (Result<Bool, APIError>)->Void) {
+    /// - Parameter completion: Returns a boolean determing if the call was successful
+    ///                         and return an APIError type with the description if it fails
+    func fetchArticles(completion: @escaping(Result<Bool, APIError>) -> Void) {
         let semaphore = DispatchSemaphore (value: 0)
-        var request = URLRequest(url: URL(string: "\(url)\(slug)")!,timeoutInterval: Double.infinity)
+        guard let url = URL(string: "\(url)\(slug)") else { return }
+        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if error != nil {
@@ -52,7 +51,6 @@ class SpaceFlightViewModel  {
             }
             semaphore.signal()
         }
-
         task.resume()
         semaphore.wait()
     }

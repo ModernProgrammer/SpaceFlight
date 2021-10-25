@@ -7,6 +7,6 @@
 
 import UIKit
 
-class ResourceCellRowViewModel : ObservableObject {
+class ResourceCellRowViewModel: ObservableObject {
     var resource = Resource(title: "", url: "", image: "")
 }

@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UIKit
-
 extension UIColor {
     /// Returns an off black color
     static let themeBlack = UIColor.rgb(red: 30, green: 30, blue: 30, alpha: 1)
@@ -28,19 +26,17 @@ extension UIColor {
     static func backgroundColor() -> UIColor {
         if #available(iOS 13, *) {
             return UIColor.init { (trait) -> UIColor in
-                return trait.userInterfaceStyle == .dark ? UIColor.themeBlack : UIColor.white
+                return trait.userInterfaceStyle == .dark ? UIColor.themeBlack: UIColor.white
             }
-        }
-        else { return UIColor.white }
+        } else { return UIColor.white }
     }
     
     /// Returns the semantic text color
     static func semanticTextColor() -> UIColor {
         if #available(iOS 13, *) {
             return UIColor.init { (trait) -> UIColor in
-                return trait.userInterfaceStyle == .dark ? UIColor.white : UIColor.themeBlack
+                return trait.userInterfaceStyle == .dark ? UIColor.white: UIColor.themeBlack
             }
-        }
-        else { return UIColor.themeBlack }
+        } else { return UIColor.themeBlack }
     }
 }

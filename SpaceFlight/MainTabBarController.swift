@@ -13,18 +13,28 @@ class MainTabBarController : UITabBarController {
         setUpControllers()
         setupTabBarProperties()
     }
-    
+}
+
+// MARK: - UI Functions
+extension MainTabBarController {
     /// Overrides the default UITabBar properties to a custom propertie
     fileprivate func setupTabBarProperties() {
         tabBar.tintColor = UIColor.systemRed
     }
-    
+}
+
+// MARK: - Setup ViewController Functions
+extension MainTabBarController {
     /// Creates the viewControllers for the tabbar for `SpaceFlightViewController` and `ResourcesViewController`
     fileprivate func setUpControllers() {
         let home = SpaceFlightViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let houseIcon = UIImage(systemName: "house")
+        let houseIconFill = UIImage(systemName: "house.fill")
         let resources = ResourcesViewController(style: .insetGrouped)
-        let homeViewController = templateNavController(unselectedImage: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"),rootViewController: home)
-        let resourcesViewController = templateNavController(unselectedImage: UIImage(systemName: "gear"), selectedImage: UIImage(systemName: "gear.fill"), rootViewController: resources)
+        let gearIcon = UIImage(systemName: "gear")
+        let gearIconFill = UIImage(systemName: "gear.fill")
+        let homeViewController = templateNavController(rootViewController: home, unselectedImage: houseIcon, selectedImage: houseIconFill)
+        let resourcesViewController = templateNavController(rootViewController: resources, unselectedImage: gearIcon, selectedImage: gearIconFill)
         viewControllers = [homeViewController, resourcesViewController]
     }
     
@@ -34,7 +44,7 @@ class MainTabBarController : UITabBarController {
     ///   - selectedImage: The `image` presented on the `tabbar` when the item is selected
     ///   - rootViewController: The `ViewController` used to wrap into a `UINavigationController`
     /// - Returns: A `UINavigationView` controller from the passed `rootViewController`
-    fileprivate func templateNavController(unselectedImage: UIImage?, selectedImage: UIImage?, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
+    fileprivate func templateNavController(rootViewController: UIViewController = UIViewController(), unselectedImage: UIImage?, selectedImage: UIImage?) -> UINavigationController {
         let viewController = rootViewController
         let viewNavController = UINavigationController(rootViewController: viewController)
         viewNavController.tabBarItem.image = unselectedImage

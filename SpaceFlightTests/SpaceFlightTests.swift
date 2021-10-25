@@ -23,14 +23,14 @@ class SpaceFlightTests: XCTestCase {
     }
 
     func test_fetch_articles() {
-        viewModel.fetchArticles()
+        viewModel.fetchArticles(completion: <#(Result<Bool, APIError>) -> Void#>)
         let articles = viewModel.articles
         XCTAssertNotNil(articles)
     }
     
     func test_get_formatted_date() {
         let dateString = "2021-10-16T00:09:09.000Z"
-        let formattedDate = Date().getFormattedDate(dateString: dateString)
+        let formattedDate = Date().getFormattedDate(of: dateString)
         XCTAssertEqual(formattedDate, "10/17/2021")
     }
     
@@ -42,13 +42,13 @@ class SpaceFlightTests: XCTestCase {
     
     func test_set_up_blur() {
         let view = UIView()
-        let blur = view.setupBlur(bounds: view.bounds)
+        let blur = view.setupBlur(from: view.bounds)
         XCTAssertNotNil(blur)
     }
     
     func test_set_up_gradient() {
         let view = UIView()
-        let gradient = view.setupGradient(height: 0, topColor: UIColor.blue.cgColor, bottomColor: UIColor.blue.cgColor)
+        let gradient = view.setupGradient(height: 0, startColor: UIColor.blue.cgColor, bottomColor: UIColor.blue.cgColor)
         XCTAssertNotNil(gradient)
     }
 }

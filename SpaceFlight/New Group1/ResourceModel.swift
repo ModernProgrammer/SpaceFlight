@@ -8,14 +8,15 @@
 import Foundation
 import UIKit
 
+// MARK: - Resource
 struct Resource {
     let title : String
-    let url   : String
+    let url : String
     let image : String
     
     init(title: String, url: String, image: String) {
         self.title = title
-        self.url   = url
+        self.url = url
         self.image = image
     }
 }

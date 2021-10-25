@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct SpaceFlightCellViewModel  {
-    let id       : Int
-    let title    : String
-    let url      : String
-    let imageURL : String
-    let summary  : String
-    let date     : String
+struct SpaceFlightCellViewModel {
+    let id: Int
+    let title: String
+    let url: String
+    let imageURL: String
+    let summary: String
+    let date: String
 }

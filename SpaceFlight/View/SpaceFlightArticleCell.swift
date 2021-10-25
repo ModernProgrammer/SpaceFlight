@@ -7,8 +7,8 @@
 
 import UIKit
 
-class SpaceFlightArticleCell : UICollectionViewCell {
-    let articleImage : CustomImageView = {
+class SpaceFlightArticleCell: UICollectionViewCell {
+    let articleImage: CustomImageView = {
         let imageView = CustomImageView()
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 30
@@ -16,13 +16,13 @@ class SpaceFlightArticleCell : UICollectionViewCell {
         return imageView
     }()
     
-    let articleTitleLabel : UILabel = {
+    let articleTitleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         return label
     }()
     
-    let articleContainerBlur : UIView = {
+    let articleContainerBlur: UIView = {
         let blurView = UIView()
         blurView.layer.cornerRadius = 30
         blurView.clipsToBounds = true
@@ -34,7 +34,7 @@ class SpaceFlightArticleCell : UICollectionViewCell {
             guard let articleImageURL = article?.imageURL else { return }
             guard let articleTitle = article?.title else { return }
             guard let articleDate = article?.date else { return }
-            let stringDate  = Date().getFormattedDate(dateString: articleDate)
+            let stringDate = Date().getFormattedDate(of: articleDate)
             setupTitle(articleTitle: articleTitle, articleDate: stringDate)
             articleImage.downloadImage(from: articleImageURL, contentMode: .scaleAspectFill)
         }
@@ -50,7 +50,7 @@ class SpaceFlightArticleCell : UICollectionViewCell {
     }
 }
 
-// MARK: -UI Functions
+// MARK: - UI Functions
 extension SpaceFlightArticleCell {
     /// setups the `articleImage`, `articleContainerBlur`, `articleTitle` to the cell
     private func setupUI() {
@@ -86,8 +86,14 @@ extension SpaceFlightArticleCell {
     ///   - articleTitle: The title of the article
     ///   - articleDate: The published date of the article
     private func setupTitle(articleTitle: String, articleDate: String) {
-        let attributedTitle = NSMutableAttributedString(string: "\(articleTitle)\n", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.white])
-        attributedTitle.append(NSMutableAttributedString(string: "Published on \(articleDate)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .thin), NSAttributedString.Key.foregroundColor : UIColor.white]))
+        let attributedTitle = NSMutableAttributedString(string: "\(articleTitle)\n", attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .bold),
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ])
+        attributedTitle.append(NSMutableAttributedString(string: "Published on \(articleDate)", attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .thin),
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]))
         articleTitleLabel.attributedText = attributedTitle
     }
 }

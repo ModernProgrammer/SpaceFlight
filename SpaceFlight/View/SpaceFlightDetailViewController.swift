@@ -7,16 +7,16 @@
 
 import UIKit
 
-class SpaceFlightDetailViewController : UIViewController {
-    let articleImageContainer    = UIView()
-    let articleSummaryContainer  = UIView()
-    let articleTitleLabel        = UILabel()
-    let articleDateLabel         = UILabel()
-    var articleURLLink           = ""
+class SpaceFlightDetailViewController: UIViewController {
+    let articleImageContainer = UIView()
+    let articleSummaryContainer = UIView()
+    let articleTitleLabel = UILabel()
+    let articleDateLabel = UILabel()
+    var articleURLLink = ""
     let articleTitleGradientView = UIView()
-    var gradient                 : CAGradientLayer?
+    var gradient: CAGradientLayer?
     
-    let articleSummary : UITextView = {
+    let articleSummary: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .clear
         textView.textColor = .semanticTextColor()
@@ -24,7 +24,7 @@ class SpaceFlightDetailViewController : UIViewController {
         return textView
     }()
     
-    let articleImageView : CustomImageView = {
+    let articleImageView: CustomImageView = {
         let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -32,7 +32,7 @@ class SpaceFlightDetailViewController : UIViewController {
         return imageView
     }()
     
-    let articleURLButton : UIButton = {
+    let articleURLButton: UIButton = {
         let button = UIButton(type: .system)
         button.configuration = .tinted()
         button.configuration?.title = "Story"
@@ -64,7 +64,8 @@ class SpaceFlightDetailViewController : UIViewController {
         setupSummaryContainer()
     }
 }
-// MARK: -Action
+
+// MARK: - Action
 extension SpaceFlightDetailViewController {
     ///  Redirects the user to the link of the story url
     @objc fileprivate func storyURLLink() {
@@ -74,7 +75,7 @@ extension SpaceFlightDetailViewController {
     }
 }
 
-// MARK: -UI Functions
+// MARK: - UI Functions
 extension SpaceFlightDetailViewController {
     /// Adds an attributed title from the article model to  `articleTitle`, `articleDate`, `articleSummary` and `articleURL`
     /// - Parameters:
@@ -83,16 +84,25 @@ extension SpaceFlightDetailViewController {
     ///   - articleSummary: The summary of the article
     ///   - articleURL: The URL link to the full article
     fileprivate func setupTitles(articleTitle: String, articleDate: String, articleSummary: String, articleURL: String) {
-        let headAttributedText = NSMutableAttributedString(string: articleTitle, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 28, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.white])
+        let headAttributedText = NSMutableAttributedString(string: articleTitle, attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 28, weight: .bold),
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ])
         self.articleTitleLabel.numberOfLines = 0
         self.articleTitleLabel.attributedText = headAttributedText
         
-        let stringDate  = Date().getFormattedDate(dateString: articleDate)
-        let subAttributedText = NSMutableAttributedString(string: "Published on \(stringDate)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .thin), NSAttributedString.Key.foregroundColor : UIColor.white])
+        let stringDate = Date().getFormattedDate(of: articleDate)
+        let subAttributedText = NSMutableAttributedString(string: "Published on \(stringDate)", attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .thin),
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ])
         self.articleDateLabel.numberOfLines = 0
         self.articleDateLabel.attributedText = subAttributedText
         
-        let summaryAttributedText = NSMutableAttributedString(string: articleSummary, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular), NSAttributedString.Key.foregroundColor : UIColor.white])
+        let summaryAttributedText = NSMutableAttributedString(string: articleSummary, attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .regular),
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ])
         self.articleSummary.attributedText = summaryAttributedText
         self.articleURLLink = articleURL
     }
@@ -118,8 +128,8 @@ extension SpaceFlightDetailViewController {
     /// adds the `articleImageContainer` and `articleSummaryContainer` to view
     fileprivate func setupImageContainer() {
         articleImageContainer.addSubview(articleImageView)
-        let navBarHeight : CGFloat = 180
-        let gradientHeight : CGFloat = navBarHeight
+        let navBarHeight: CGFloat = 180
+        let gradientHeight: CGFloat = navBarHeight
         let topGradientColor = UIColor.black.withAlphaComponent(0.8).cgColor
         let bottomGradientColor = UIColor.black.withAlphaComponent(0.0).cgColor
         gradient = view.setupGradient(height: gradientHeight, startColor: topGradientColor, endColor: bottomGradientColor)
@@ -159,7 +169,7 @@ extension SpaceFlightDetailViewController {
         articleSummaryContainer.addSubview(articleSummary)
     
         articleURLButton.translatesAutoresizingMaskIntoConstraints = false
-        articleSummary.translatesAutoresizingMaskIntoConstraints   = false
+        articleSummary.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             articleURLButton.bottomAnchor.constraint(equalTo: articleSummaryContainer.safeAreaLayoutGuide.bottomAnchor, constant: -20),
