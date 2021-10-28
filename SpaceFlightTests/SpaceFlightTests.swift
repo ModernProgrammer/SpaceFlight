@@ -10,28 +10,21 @@ import UIKit
 @testable import SpaceFlight
 
 class SpaceFlightTests: XCTestCase {
-    var viewModel : SpaceFlightViewModel!
-    
+    var viewModel = MockSpaceFlightViewModel(true)
+    var mockCustomImageView = MockCustomImageView(true)
+
     override func setUp() {
         super.setUp()
-        viewModel = SpaceFlightViewModel()
     }
     
     override func tearDown() {
-        viewModel = nil
         super.tearDown()
     }
 
-    func test_fetch_articles() {
-        viewModel.fetchArticles(completion: <#(Result<Bool, APIError>) -> Void#>)
-        let articles = viewModel.articles
-        XCTAssertNotNil(articles)
-    }
-    
     func test_get_formatted_date() {
         let dateString = "2021-10-16T00:09:09.000Z"
-        let formattedDate = Date().getFormattedDate(of: dateString)
-        XCTAssertEqual(formattedDate, "10/17/2021")
+        let formattedDate = dateString.getFormattedDate()
+        XCTAssertEqual(formattedDate, "10/15/2021 08:09:09")
     }
     
     func test_rgb_format() {
@@ -48,7 +41,52 @@ class SpaceFlightTests: XCTestCase {
     
     func test_set_up_gradient() {
         let view = UIView()
-        let gradient = view.setupGradient(height: 0, startColor: UIColor.blue.cgColor, bottomColor: UIColor.blue.cgColor)
+        let gradient = view.setupGradient(height: 0, startColor: UIColor.blue.cgColor, endColor: UIColor.blue.cgColor)
         XCTAssertNotNil(gradient)
+    }
+    
+    func test_fetch_articles_data_reponse() {
+        viewModel.fetchArticles { result in
+            switch result {
+            case .failure(let error):
+                XCTAssertNotNil(error)
+                XCTAssertEqual(error, APIError.unableToComplete)
+                return
+            case .success(let success):
+                XCTAssertTrue(success)
+                return
+            }
+        }
+    }
+    
+    func test_bind_article_data_to_model() {
+        let jsonResponse = "[{\"id\": 11349,\"title\": \"OneWeb and Saudi Arabia create $200 million connectivity joint venture\",\"url\":\"https://spacenews.com/oneweb-and-saudi-arabia-create-200-million-connectivity-joint-venture/\",\"imageUrl\":\"https://spacenews.com/wp-content/uploads/2021/09/OW-Constellation-1.png\",\"newsSite\": \"SpaceNews\",\"summary\": \"Satellite broadband startup OneWeb and a company backed by Saudi Arabia’s sovereign wealth fund have signed a $200 million joint venture, with exclusive rights to distribute the network’s capacity in targeted Middle East regions.\",\"publishedAt\": \"2021-10-27T21:03:14.000Z\",\"updatedAt\": \"2021-10-27T21:03:14.957Z\",\"featured\": false,\"launches\": [],\"events\": []}]"
+        let data = jsonResponse.data(using: .utf8)!
+        viewModel.mapArticleDataToModel(from: data) { result in
+            switch result {
+            case .failure(let error):
+                XCTAssertNotNil(error)
+                XCTAssertEqual(error, MapError.invalidData)
+                return
+            case .success(let success):
+                XCTAssertTrue(success)
+                return
+            }
+        }
+    }
+    
+    func test_download_image_from_url_response() {
+        let urlString = "https://spacenews.com/wp-content/uploads/2021/09/OW-Constellation-1.png"
+        mockCustomImageView.downloadImage(from: urlString, completion: { result in
+            switch result {
+            case .failure(let error):
+                XCTAssertNotNil(error)
+                XCTAssertEqual(error, ImageDownloadError.unableToComplete)
+                return
+            case .success(let success):
+                XCTAssertTrue(success)
+                return
+            }
+        })
     }
 }

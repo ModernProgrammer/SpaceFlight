@@ -7,8 +7,9 @@
 
 import UIKit
 
+let imageCache = NSCache<AnyObject, AnyObject>()
+
 class CustomImageView: UIImageView {
-    let imageCache = NSCache<AnyObject, AnyObject>()
     var imageUrlString: String?
     var imageLoadingSpinner = UIActivityIndicatorView(style: .large)
 
@@ -16,25 +17,43 @@ class CustomImageView: UIImageView {
     /// - Parameters:
     ///   - urlString: The `URL`string of the image
     ///   - mode: Aspect ratio that is set to scaleAspectFit by default
-    func downloadImage(from urlString: String, contentMode mode: ContentMode = .scaleAspectFit) {
+    func downloadImage(from urlString: String, completion: ( (Result<Bool, ImageDownloadError>) -> Void)?) {
         setupSpinner()
-        contentMode = mode
         image = nil
         guard let url = URL(string: urlString) else { return }
         imageUrlString = urlString
-        // Checks to see if image was cache
+        /// Checks to see if image was cache
         if let imageFromCache = imageCache.object(forKey: urlString as NSString) as? UIImage {
-            removeFromView(view: imageLoadingSpinner)
+            imageLoadingSpinner.removeFromSuperview()
             self.image = imageFromCache
+            guard let completion = completion else { return }
+            completion(.success(true))
             return
         }
         
-        // dataTask is called if the image has not been cached
-        // TODO: Set a timeout
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            guard
-                let data = data, error == nil
-                else { return }
+        /// dataTask is called if the image has not been cached
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            /// an error is returned if the data is unable to be retrieved from the server
+            if error != nil {
+                guard let completion = completion else { return }
+                completion(.failure(.unableToComplete))
+                return
+            }
+            
+            /// an error is returned if a bad response is retrieved
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                guard let completion = completion else { return }
+                completion(.failure(.invalidResponse))
+                return
+            }
+
+            /// an error is returned if the data retrieved is invalid
+            guard let data = data else {
+                guard let completion = completion else { return }
+                completion(.failure(.invalidData))
+                return
+            }
+            
             DispatchQueue.main.async() { [weak self] in
                 let image = UIImage(data: data)
                 guard let imageToCache = image else { return }
@@ -42,8 +61,11 @@ class CustomImageView: UIImageView {
                     self?.image = imageToCache
                 }
                 guard let self = self else { return }
-                self.imageCache.setObject(imageToCache, forKey: urlString as NSString)
-                self.removeFromView(view: self.imageLoadingSpinner)
+                /// caches image based on urlString
+                imageCache.setObject(imageToCache, forKey: urlString as NSString)
+                self.imageLoadingSpinner.removeFromSuperview()
+                guard let completion = completion else { return }
+                completion(.success(true))
             }
         }
         .resume()
@@ -61,10 +83,5 @@ class CustomImageView: UIImageView {
             imageLoadingSpinner.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageLoadingSpinner.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
-    }
-    
-    /// Removes the `UIActivityIndicatorView` on the UIImageView
-    func removeFromView(view subView: UIView) {
-        subView.removeFromSuperview()
     }
 }

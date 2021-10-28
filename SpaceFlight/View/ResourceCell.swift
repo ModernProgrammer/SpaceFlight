@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 struct ResourceCellRowView: View {
-    @ObservedObject var resourceCellRowViewModel : ResourceCellRowViewModel
+    @ObservedObject var resourceCellRowViewModel: ResourceCellRowViewModel
     var body: some View {
         ZStack {
             HStack {

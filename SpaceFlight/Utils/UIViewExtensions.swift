@@ -34,4 +34,20 @@ extension UIView {
          gradient.frame = CGRect(x: 0.0, y: 0.0, width: self.frame.size.width, height: height)
          return gradient
     }
+    
+    
+    /// Creates an attributed Text string
+    /// - Parameters:
+    ///   - textString: The text string for the attributed text
+    ///   - fontSize: The desired size of the font
+    ///   - textWeight: The desired weight of the font
+    ///   - textColor: The desired text color
+    /// - Returns: `NSMutableAttributedString` with the custom properties
+    func setupAttributedText(text textString: String, size fontSize: CGFloat, weight textWeight: UIFont.Weight, color textColor: UIColor) -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString(string: textString, attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize, weight: textWeight),
+            NSAttributedString.Key.foregroundColor: textColor
+        ])
+        return attributedString
+    }
 }

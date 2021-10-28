@@ -16,7 +16,7 @@ struct Article: Codable {
     let url: String
     let imageURL: String
     let summary: String
-    let publishedAt : String
+    let publishedAt: String
  
     enum CodingKeys: String, CodingKey {
         case id, title, url

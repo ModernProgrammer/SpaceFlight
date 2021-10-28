@@ -40,7 +40,7 @@ class SpaceFlightDetailViewController: UIViewController {
         button.configuration?.baseBackgroundColor = .systemRed
         button.configuration?.image = UIImage(systemName: "book.fill")
         button.configuration?.imagePadding = 6
-        button.addTarget(self, action: #selector(storyURLLink), for: .touchUpInside)
+        button.addTarget(self, action: #selector(openArticleURLLink), for: .touchUpInside)
         return button
     }()
     
@@ -52,7 +52,7 @@ class SpaceFlightDetailViewController: UIViewController {
             guard let url = article?.url else { return }
             guard let imageURL = article?.imageURL else { return }
             setupTitles(articleTitle: headTitle, articleDate: subTitle, articleSummary: summary, articleURL: url)
-            articleImageView.downloadImage(from: imageURL, contentMode: .scaleAspectFill)
+            articleImageView.downloadImage(from: imageURL, completion: nil)
         }
     }
     
@@ -68,7 +68,7 @@ class SpaceFlightDetailViewController: UIViewController {
 // MARK: - Action
 extension SpaceFlightDetailViewController {
     ///  Redirects the user to the link of the story url
-    @objc fileprivate func storyURLLink() {
+    @objc func openArticleURLLink() {
         if let url = URL(string: articleURLLink) {
             UIApplication.shared.open(url)
         }
@@ -84,25 +84,12 @@ extension SpaceFlightDetailViewController {
     ///   - articleSummary: The summary of the article
     ///   - articleURL: The URL link to the full article
     fileprivate func setupTitles(articleTitle: String, articleDate: String, articleSummary: String, articleURL: String) {
-        let headAttributedText = NSMutableAttributedString(string: articleTitle, attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 28, weight: .bold),
-            NSAttributedString.Key.foregroundColor: UIColor.white
-        ])
-        self.articleTitleLabel.numberOfLines = 0
-        self.articleTitleLabel.attributedText = headAttributedText
-        
-        let stringDate = Date().getFormattedDate(of: articleDate)
-        let subAttributedText = NSMutableAttributedString(string: "Published on \(stringDate)", attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .thin),
-            NSAttributedString.Key.foregroundColor: UIColor.white
-        ])
-        self.articleDateLabel.numberOfLines = 0
-        self.articleDateLabel.attributedText = subAttributedText
-        
-        let summaryAttributedText = NSMutableAttributedString(string: articleSummary, attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .regular),
-            NSAttributedString.Key.foregroundColor: UIColor.white
-        ])
+        let date = articleDate.getFormattedDate()
+        articleTitleLabel.attributedText = view.setupAttributedText(text: articleTitle, size: 28, weight: .bold, color: .white)
+        articleTitleLabel.numberOfLines = 0
+        articleDateLabel.attributedText = view.setupAttributedText(text: "\(String(describing: date))", size: 14, weight: .thin, color: .white)
+        articleDateLabel.numberOfLines = 0
+        let summaryAttributedText = view.setupAttributedText(text: articleSummary, size: 16, weight: .regular, color: .white)
         self.articleSummary.attributedText = summaryAttributedText
         self.articleURLLink = articleURL
     }
@@ -125,9 +112,8 @@ extension SpaceFlightDetailViewController {
         ])
     }
     
-    /// adds the `articleImageContainer` and `articleSummaryContainer` to view
-    fileprivate func setupImageContainer() {
-        articleImageContainer.addSubview(articleImageView)
+    /// Creates a black gradient underneath the title
+    fileprivate func setupArticleGradient() {
         let navBarHeight: CGFloat = 180
         let gradientHeight: CGFloat = navBarHeight
         let topGradientColor = UIColor.black.withAlphaComponent(0.8).cgColor
@@ -139,6 +125,12 @@ extension SpaceFlightDetailViewController {
             articleTitleGradientView.leftAnchor.constraint(equalTo: view.leftAnchor),
         ])
         articleTitleGradientView.layer.insertSublayer(gradient!, at: 0)
+    }
+    
+    /// adds the `articleImageContainer` and `articleSummaryContainer` to view
+    fileprivate func setupImageContainer() {
+        articleImageContainer.addSubview(articleImageView)
+        setupArticleGradient()
         articleImageContainer.addSubview(articleTitleLabel)
         articleImageContainer.addSubview(articleDateLabel)
         articleTitleLabel.translatesAutoresizingMaskIntoConstraints = false
