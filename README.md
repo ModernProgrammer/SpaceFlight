@@ -45,7 +45,7 @@ Project is created with:
 * Space Flight API
 
 ## Revision Updates
-## Here is a list of updates I made for this revision:
+Here is a list of updates I made for this revision:
 ### Networking
 * Blocks the main thread while waiting for networking to complete while app appears frozen on a black screen
 * Make sure the app behaves well without a network connection
