@@ -1,0 +1,53 @@
+{
+  "count": 3,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 33001,
+      "title": "A perfectly valid article",
+      "authors": [],
+      "url": "https://news.example.com/spacenews/33001",
+      "image_url": "https://images.example.com/articles/33001.jpg",
+      "news_site": "SpaceNews",
+      "summary": "Should still be shown.",
+      "published_at": "2025-03-09T12:00:00Z",
+      "updated_at": "2025-03-09T12:00:00Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    },
+    {
+      "id": "33002",
+      "title": null,
+      "authors": [],
+      "url": "https://news.example.com/33002",
+      "image_url": "",
+      "news_site": "SpaceNews",
+      "summary": "id is a string and title is null.",
+      "published_at": "not-a-date",
+      "updated_at": "2025-03-09T11:00:00Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    },
+    {
+      "id": 33003,
+      "title": "Valid article with an unknown extra field",
+      "authors": [],
+      "url": "https://news.example.com/spaceflightnow/33003",
+      "image_url": "https://images.example.com/articles/33003.jpg",
+      "news_site": "Spaceflight Now",
+      "summary": "Unknown fields must be ignored, not rejected.",
+      "published_at": "2025-03-09T10:00:00Z",
+      "updated_at": "2025-03-09T10:00:00Z",
+      "featured": false,
+      "launches": [],
+      "events": [],
+      "brand_new_field": {
+        "added_by": "backend",
+        "in": "v4.1"
+      }
+    }
+  ]
+}

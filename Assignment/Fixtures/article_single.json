@@ -1,0 +1,24 @@
+{
+  "id": 31009,
+  "title": "Heavy-lift rocket completes second static fire ahead of debut flight",
+  "authors": [
+    {
+      "name": "Fixture Author",
+      "socials": null
+    }
+  ],
+  "url": "https://news.example.com/spacenews/31009",
+  "image_url": "https://images.example.com/articles/31009.jpg",
+  "news_site": "SpaceNews",
+  "summary": "The vehicle's first stage fired all engines for the planned duration, clearing the way for a launch attempt later this month.",
+  "published_at": "2025-03-14T18:42:07Z",
+  "updated_at": "2025-03-14T19:01:12.733000Z",
+  "featured": true,
+  "launches": [
+    {
+      "launch_id": "6f4e2c1a-9b7d-4e3f-8a21-3c5d7e9f0b12",
+      "provider": "Launch Library 2"
+    }
+  ],
+  "events": []
+}

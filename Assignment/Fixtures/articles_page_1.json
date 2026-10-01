@@ -1,0 +1,96 @@
+{
+  "count": 9,
+  "next": "https://api.spaceflightnewsapi.net/v4/articles/?limit=5&offset=5",
+  "previous": null,
+  "results": [
+    {
+      "id": 31009,
+      "title": "Heavy-lift rocket completes second static fire ahead of debut flight",
+      "authors": [
+        {
+          "name": "Fixture Author",
+          "socials": null
+        }
+      ],
+      "url": "https://news.example.com/spacenews/31009",
+      "image_url": "https://images.example.com/articles/31009.jpg",
+      "news_site": "SpaceNews",
+      "summary": "The vehicle's first stage fired all engines for the planned duration, clearing the way for a launch attempt later this month.",
+      "published_at": "2025-03-14T18:42:07Z",
+      "updated_at": "2025-03-14T18:42:07Z",
+      "featured": true,
+      "launches": [
+        {
+          "launch_id": "6f4e2c1a-9b7d-4e3f-8a21-3c5d7e9f0b12",
+          "provider": "Launch Library 2"
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": 31008,
+      "title": "Lunar lander team publishes post-flight analysis",
+      "authors": [
+        {
+          "name": "First Writer",
+          "socials": null
+        },
+        {
+          "name": "Second Writer",
+          "socials": null
+        }
+      ],
+      "url": "https://news.example.com/nasaspaceflight/31008",
+      "image_url": "https://images.example.com/articles/31008.jpg",
+      "news_site": "NASASpaceflight",
+      "summary": "Engineers traced the landing anomaly to a laser rangefinder that was not powered on during descent.",
+      "published_at": "2025-03-14T16:05:55.481000Z",
+      "updated_at": "2025-03-14T16:05:55.481000Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    },
+    {
+      "id": 31007,
+      "title": "Commercial station module arrives at launch site",
+      "authors": [],
+      "url": "https://news.example.com/spaceflightnow/31007",
+      "image_url": "https://images.example.com/articles/31007.jpg",
+      "news_site": "Spaceflight Now",
+      "summary": "The pressurized module will undergo final checkouts before integration with its launch vehicle.",
+      "published_at": "2025-03-14T13:20:00Z",
+      "updated_at": "2025-03-14T13:20:00Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    },
+    {
+      "id": 31006,
+      "title": "Cubesat constellation adds twelve satellites in rideshare mission",
+      "authors": [],
+      "url": "https://news.example.com/teslarati/31006",
+      "image_url": "https://images.example.com/articles/31006.jpg",
+      "news_site": "Teslarati",
+      "summary": "The batch brings the constellation to 96 active spacecraft.",
+      "published_at": "2025-03-14T09:47:31Z",
+      "updated_at": "2025-03-14T09:47:31Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    },
+    {
+      "id": 31005,
+      "title": "Space agency selects instruments for outer planet orbiter",
+      "authors": [],
+      "url": "https://news.example.com/europeanspaceflight/31005",
+      "image_url": "https://images.example.com/articles/31005.jpg",
+      "news_site": "European Spaceflight",
+      "summary": "Five instruments were selected from fourteen proposals.",
+      "published_at": "2025-03-13T22:11:09.2Z",
+      "updated_at": "2025-03-13T22:11:09.2Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    }
+  ]
+}
