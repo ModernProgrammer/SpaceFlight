@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpaceFlight Mocks</title>
+<style>
+:root {
+  --page: #eef0f4; --ink: #1d1d1f; --muted: #6e6e73; --card: #ffffff;
+  --screen: #f2f2f7; --row: #ffffff; --sep: #d8d8dc; --accent: #e5352b;
+  --skeleton: #e3e3e8; --banner: #fff4d6; --banner-ink: #6b4b00;
+  --frame: #1d1d1f; --note-bg: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #111214; --ink: #f5f5f7; --muted: #98989f; --card: #1c1c1e;
+    --screen: #000000; --row: #1c1c1e; --sep: #38383a; --accent: #ff453a;
+    --skeleton: #2c2c2e; --banner: #3a2f10; --banner-ink: #ffd76a;
+    --frame: #3a3a3c; --note-bg: #1c1c1e;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #111214; --ink: #f5f5f7; --muted: #98989f; --card: #1c1c1e;
+  --screen: #000000; --row: #1c1c1e; --sep: #38383a; --accent: #ff453a;
+  --skeleton: #2c2c2e; --banner: #3a2f10; --banner-ink: #ffd76a;
+  --frame: #3a3a3c; --note-bg: #1c1c1e;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+}
+header.page { max-width: 1200px; margin: 0 auto; padding: 32px 16px 8px; }
+header.page h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: -0.02em; }
+header.page p { margin: 0; color: var(--muted); max-width: 70ch; }
+.grid {
+  max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px 24px;
+}
+figure { margin: 0; display: flex; flex-direction: column; align-items: center; }
+figcaption { width: 100%; max-width: 300px; margin-top: 12px; }
+figcaption h2 { font-size: 15px; margin: 0 0 4px; }
+figcaption ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+.wide { grid-column: 1 / -1; }
+.wide figcaption { max-width: 720px; }
+
+/* Phone frame */
+.phone {
+  width: 280px; height: 580px; border-radius: 40px; border: 10px solid var(--frame);
+  background: var(--screen); overflow: hidden; display: flex; flex-direction: column; position: relative;
+}
+.status { height: 34px; flex: none; display: flex; justify-content: space-between; align-items: center;
+  padding: 0 22px; font-size: 12px; font-weight: 600; }
+.nav { padding: 2px 16px 8px; flex: none; }
+.nav .large { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
+.nav .bar { display: flex; justify-content: space-between; align-items: center; font-size: 15px; height: 32px; }
+.nav .bar a { color: var(--accent); text-decoration: none; }
+.search { margin-top: 8px; background: var(--skeleton); border-radius: 10px; padding: 6px 10px;
+  color: var(--muted); font-size: 14px; }
+.search.active { color: var(--ink); }
+.content { flex: 1; overflow: hidden; }
+.tabbar { flex: none; height: 56px; border-top: 1px solid var(--sep); background: var(--row);
+  display: flex; justify-content: space-around; align-items: flex-start; padding-top: 6px; font-size: 10px; color: var(--muted); }
+.tabbar span { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.tabbar .on { color: var(--accent); }
+.tabbar i { font-style: normal; font-size: 18px; line-height: 1; }
+
+/* Rows */
+.list { background: var(--row); }
+.row { display: flex; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--sep); }
+.thumb { width: 64px; height: 64px; border-radius: 10px; flex: none;
+  background: linear-gradient(135deg, #2b3a67, #6a4c93 55%, #e5352b); }
+.thumb.b { background: linear-gradient(135deg, #0f2027, #2c5364); }
+.thumb.c { background: linear-gradient(135deg, #3a1c71, #d76d77 60%, #ffaf7b); }
+.thumb.d { background: linear-gradient(135deg, #232526, #414345); }
+.thumb.none { background: var(--skeleton); display: grid; place-items: center; color: var(--muted); font-size: 22px; }
+.meta { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.title { font-size: 14px; font-weight: 600; line-height: 1.3; margin: 2px 0;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.time { font-size: 12px; color: var(--muted); }
+.sk { background: var(--skeleton); border-radius: 4px; height: 10px; margin: 4px 0; }
+
+/* States */
+.center { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 24px; gap: 8px; }
+.center .icon { font-size: 40px; color: var(--muted); }
+.center h3 { margin: 0; font-size: 17px; }
+.center p { margin: 0; color: var(--muted); font-size: 13px; }
+.btn { display: inline-block; margin-top: 8px; padding: 8px 18px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-weight: 600; font-size: 14px; }
+.btn.tinted { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+.banner { background: var(--banner); color: var(--banner-ink); font-size: 12px; padding: 8px 16px; font-weight: 500; }
+.inline-error { padding: 14px 16px; text-align: center; font-size: 13px; color: var(--muted); }
+.inline-error .btn { padding: 5px 14px; font-size: 13px; margin-top: 6px; }
+
+/* Detail */
+.hero { height: 210px; background: linear-gradient(160deg, #0b132b, #3a506b 50%, #e5352b); position: relative; flex: none; }
+.hero .toolbar { position: absolute; top: 40px; left: 12px; right: 12px; display: flex; justify-content: space-between; }
+.hero .toolbar span { width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,.45); color: #fff;
+  display: grid; place-items: center; font-size: 14px; }
+.detail { padding: 14px 16px; }
+.detail h3 { margin: 4px 0 6px; font-size: 20px; line-height: 1.2; letter-spacing: -0.01em; }
+.detail p { margin: 8px 0; font-size: 14px; }
+.detail .by { font-size: 12px; color: var(--muted); }
+
+/* AX5 */
+.ax .row { flex-direction: column; }
+.ax .thumb { width: 100%; height: 110px; }
+.ax .meta { font-size: 15px; }
+.ax .title { font-size: 22px; -webkit-line-clamp: unset; }
+.ax .time { font-size: 17px; }
+
+/* iPad */
+.ipad { width: 100%; max-width: 720px; aspect-ratio: 4 / 3; border-radius: 28px; border: 10px solid var(--frame);
+  background: var(--screen); overflow: hidden; display: flex; }
+.ipad .side { width: 38%; border-right: 1px solid var(--sep); display: flex; flex-direction: column; background: var(--screen); }
+.ipad .main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+.ipad .row.sel { background: color-mix(in srgb, var(--accent) 14%, var(--row)); }
+.ipad .hero { height: 46%; }
+.ipad .detail h3 { font-size: 24px; }
+
+.legend { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.legend div { background: var(--note-bg); border-radius: 12px; padding: 14px 16px; font-size: 13px; color: var(--muted); }
+.legend strong { color: var(--ink); }
+@media (max-width: 360px) { .phone { width: 100%; } }
+</style>
+</head>
+<body>
+<header class="page">
+  <h1>SpaceFlight screen mocks</h1>
+  <p>These mocks show design intent, not a pixel spec. Use system fonts, colors, and
+  components wherever they fit. The notes under each screen are requirements. This
+  page follows your system's light or dark setting; check both.</p>
+</header>
+
+<div class="grid">
+
+  <!-- 1. Feed loaded -->
+  <figure>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="nav"><p class="large">Spaceflight</p><div class="search">⌕ Search articles</div></div>
+      <div class="content list">
+        <div class="row"><div class="thumb"></div><div><div class="meta">SpaceNews · Featured</div><div class="title">Heavy-lift rocket completes second static fire ahead of debut flight</div><div class="time">2h ago</div></div></div>
+        <div class="row"><div class="thumb b"></div><div><div class="meta">NASASpaceflight</div><div class="title">Lunar lander team publishes post-flight analysis</div><div class="time">4h ago</div></div></div>
+        <div class="row"><div class="thumb c"></div><div><div class="meta">Spaceflight Now</div><div class="title">Commercial station module arrives at launch site</div><div class="time">7h ago</div></div></div>
+        <div class="row"><div class="thumb none">🛰</div><div><div class="meta">SpaceNews</div><div class="title">No image, no authors, no summary</div><div class="time">Yesterday</div></div></div>
+        <div class="row"><div class="thumb d"></div><div><div class="meta">European Spaceflight</div><div class="title">Space agency selects instruments for outer planet orbiter</div><div class="time">Yesterday</div></div></div>
+      </div>
+      <div class="tabbar"><span class="on"><i>▤</i>Feed</span><span><i>☆</i>Saved</span></div>
+    </div>
+    <figcaption><h2>1 · Feed (loaded)</h2><ul>
+      <li>Titles wrap to at most 3 lines, then truncate.</li>
+      <li>Missing image: show a neutral placeholder, never an empty gap.</li>
+      <li>Relative time uses the system's localized formatter.</li>
+      <li>VoiceOver reads each row as one element: "SpaceNews, Heavy-lift rocket…, 2 hours ago."</li>
+      <li>Custom VoiceOver action: Bookmark.</li>
+      <li>Pull to refresh; infinite scroll.</li>
+    </ul></figcaption>
+  </figure>
+
+  <!-- 2. First load -->
+  <figure>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="nav"><p class="large">Spaceflight</p><div class="search">⌕ Search articles</div></div>
+      <div class="content list">
+        <div class="row"><div class="thumb none"></div><div style="flex:1"><div class="sk" style="width:40%"></div><div class="sk"></div><div class="sk" style="width:80%"></div><div class="sk" style="width:25%"></div></div></div>
+        <div class="row"><div class="thumb none"></div><div style="flex:1"><div class="sk" style="width:35%"></div><div class="sk"></div><div class="sk" style="width:70%"></div><div class="sk" style="width:25%"></div></div></div>
+        <div class="row"><div class="thumb none"></div><div style="flex:1"><div class="sk" style="width:45%"></div><div class="sk"></div><div class="sk" style="width:60%"></div><div class="sk" style="width:25%"></div></div></div>
+        <div class="row"><div class="thumb none"></div><div style="flex:1"><div class="sk" style="width:30%"></div><div class="sk"></div><div class="sk" style="width:75%"></div><div class="sk" style="width:25%"></div></div></div>
+      </div>
+      <div class="tabbar"><span class="on"><i>▤</i>Feed</span><span><i>☆</i>Saved</span></div>
+    </div>
+    <figcaption><h2>2 · First load</h2><ul>
+      <li>Placeholder rows (consider <code>.redacted(reason: .placeholder)</code>), not a lone spinner.</li>
+      <li>If cached articles exist, show them immediately instead of placeholders.</li>
+      <li>No shimmer animation when Reduce Motion is on.</li>
+    </ul></figcaption>
+  </figure>
+
+  <!-- 3. Offline + page error -->
+  <figure>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span>✈︎ ▮</span></div>
+      <div class="nav"><p class="large">Spaceflight</p><div class="search">⌕ Search articles</div></div>
+      <div class="banner">You're offline. Showing articles from 2 hours ago.</div>
+      <div class="content list">
+        <div class="row"><div class="thumb"></div><div><div class="meta">SpaceNews</div><div class="title">Heavy-lift rocket completes second static fire ahead of debut flight</div><div class="time">2h ago</div></div></div>
+        <div class="row"><div class="thumb b"></div><div><div class="meta">NASASpaceflight</div><div class="title">Lunar lander team publishes post-flight analysis</div><div class="time">4h ago</div></div></div>
+        <div class="row"><div class="thumb c"></div><div><div class="meta">Spaceflight Now</div><div class="title">Commercial station module arrives at launch site</div><div class="time">7h ago</div></div></div>
+        <div class="inline-error">Couldn't load more articles.<br><span class="btn tinted">Try Again</span></div>
+      </div>
+      <div class="tabbar"><span class="on"><i>▤</i>Feed</span><span><i>☆</i>Saved</span></div>
+    </div>
+    <figcaption><h2>3 · Offline cache and page failure</h2><ul>
+      <li>The banner doesn't block content and disappears when the connection returns.</li>
+      <li>A failed later page shows an inline retry; loaded rows stay.</li>
+      <li>Don't automatically retry the failed page on every scroll event.</li>
+    </ul></figcaption>
+  </figure>
+
+  <!-- 4. Full error -->
+  <figure>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="nav"><p class="large">Spaceflight</p></div>
+      <div class="content"><div class="center">
+        <div class="icon">⚠︎</div>
+        <h3>Couldn't load articles</h3>
+        <p>Check your connection and try again.</p>
+        <span class="btn">Try Again</span>
+      </div></div>
+      <div class="tabbar"><span class="on"><i>▤</i>Feed</span><span><i>☆</i>Saved</span></div>
+    </div>
+    <figcaption><h2>4 · First load failed, no cache</h2><ul>
+      <li>Consider <code>ContentUnavailableView</code>.</li>
+      <li>Error text is written for people. Never show <code>DecodingError</code> or raw status codes.</li>
+      <li>429: "Too many requests. Try again in 30 seconds." Disable Retry until then.</li>
+    </ul></figcaption>
+  </figure>
+
+  <!-- 5. Search empty -->
+  <figure>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="nav"><div class="bar"><span></span><a>Cancel</a></div><div class="search active">⌕ starlinr</div></div>
+      <div class="content"><div class="center">
+        <div class="icon">⌕</div>
+        <h3>No results for "starlinr"</h3>
+        <p>Check the spelling or try a different search.</p>
+      </div></div>
+      <div class="tabbar"><span class="on"><i>▤</i>Feed</span><span><i>☆</i>Saved</span></div>
+    </div>
+    <figcaption><h2>5 · Search with no results</h2><ul>
+      <li>Debounce about 300 ms; each keystroke cancels the request in flight.</li>
+      <li>Results from an older query never overwrite results from a newer one.</li>
+      <li>Clearing the field returns to the feed without refetching it.</li>
+    </ul></figcaption>
+  </figure>
+
+  <!-- 6. Detail -->
+  <figure>
+    <div class="phone">
+      <div class="hero"><div class="toolbar"><span>‹</span><span style="display:flex;gap:8px;background:none;width:auto"><span>★</span><span>⇪</span></span></div></div>
+      <div class="content detail">
+        <div class="meta">SpaceNews · Mar 14, 2025</div>
+        <h3>Heavy-lift rocket completes second static fire ahead of debut flight</h3>
+        <div class="by">By Fixture Author</div>
+        <p>The vehicle's first stage fired all engines for the planned duration, clearing the way for a launch attempt later this month.</p>
+        <span class="btn">Read Full Article</span>
+      </div>
+    </div>
+    <figcaption><h2>6 · Article detail</h2><ul>
+      <li>Toolbar: Bookmark (filled when saved) and Share (<code>ShareLink</code>).</li>
+      <li>"Read Full Article" opens <code>SFSafariViewController</code>.</li>
+      <li>Hide the "By …" line when there are no authors.</li>
+      <li>The absolute date uses a localized format, not hand-written <code>MM/dd/yyyy</code>.</li>
+      <li>Must work offline for saved articles, including the image.</li>
+    </ul></figcaption>
+  </figure>
+
+  <!-- 7. Saved empty -->
+  <figure>
+    <div class="phone">
+      <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="nav"><p class="large">Saved</p></div>
+      <div class="content"><div class="center">
+        <div class="icon">☆</div>
+        <h3>No saved articles</h3>
+        <p>Tap ☆ on any article to read it later, even offline.</p>
+      </div></div>
+      <div class="tabbar"><span><i>▤</i>Feed</span><span class="on"><i>★</i>Saved</span></div>
+    </div>
+    <figcaption><h2>7 · Saved (empty)</h2><ul>
+      <li>When populated: same row style as the feed, newest bookmark first.</li>
+      <li>Swipe to delete, with an accessible alternative (VoiceOver action or Edit mode).</li>
+    </ul></figcaption>
+  </figure>
+
+  <!-- 8. AX5 -->
+  <figure>
+    <div class="phone ax">
+      <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="nav"><p class="large" style="font-size:30px">Spaceflight</p></div>
+      <div class="content list">
+        <div class="row"><div class="thumb"></div><div><div class="meta">SpaceNews</div><div class="title">Heavy-lift rocket completes second static fire ahead of debut flight</div><div class="time">2 hours ago</div></div></div>
+      </div>
+      <div class="tabbar"><span class="on"><i>▤</i>Feed</span><span><i>☆</i>Saved</span></div>
+    </div>
+    <figcaption><h2>8 · Dynamic Type at AX5</h2><ul>
+      <li>At accessibility sizes, rows stack vertically (<code>ViewThatFits</code> or <code>dynamicTypeSize</code>).</li>
+      <li>Titles aren't line-limited at AX sizes.</li>
+      <li>Include an AX5 screenshot in your submission.</li>
+    </ul></figcaption>
+  </figure>
+
+  <!-- 9. iPad -->
+  <figure class="wide">
+    <div class="ipad">
+      <div class="side">
+        <div class="status"><span>9:41</span><span></span></div>
+        <div class="nav"><p class="large">Spaceflight</p><div class="search">⌕ Search articles</div></div>
+        <div class="list" style="flex:1">
+          <div class="row sel"><div class="thumb"></div><div><div class="meta">SpaceNews</div><div class="title">Heavy-lift rocket completes second static fire ahead of debut flight</div><div class="time">2h ago</div></div></div>
+          <div class="row"><div class="thumb b"></div><div><div class="meta">NASASpaceflight</div><div class="title">Lunar lander team publishes post-flight analysis</div><div class="time">4h ago</div></div></div>
+          <div class="row"><div class="thumb c"></div><div><div class="meta">Spaceflight Now</div><div class="title">Commercial station module arrives at launch site</div><div class="time">7h ago</div></div></div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="hero"><div class="toolbar"><span style="opacity:0"></span><span style="display:flex;gap:8px;background:none;width:auto"><span>★</span><span>⇪</span></span></div></div>
+        <div class="detail">
+          <div class="meta">SpaceNews · Mar 14, 2025</div>
+          <h3>Heavy-lift rocket completes second static fire ahead of debut flight</h3>
+          <div class="by">By Fixture Author</div>
+          <p>The vehicle's first stage fired all engines for the planned duration, clearing the way for a launch attempt later this month.</p>
+          <span class="btn">Read Full Article</span>
+        </div>
+      </div>
+    </div>
+    <figcaption><h2>9 · iPad (regular width)</h2><ul>
+      <li>Use <code>NavigationSplitView</code>; the selection is highlighted in the sidebar.</li>
+      <li>With no selection, the detail column shows a placeholder ("Select an article").</li>
+      <li>Rotating or resizing (Split View, Stage Manager) keeps the current selection.</li>
+      <li>On iPhone, the same code collapses to a navigation stack.</li>
+    </ul></figcaption>
+  </figure>
+
+</div>
+
+<div class="legend"><div>
+  <strong>Not mocked, still required:</strong>
+  the deep link to a missing article (404 message), the refresh indicator, search results
+  (same rows as the feed), and the Saved tab with content.
+</div></div>
+<div style="height:48px"></div>
+</body>
+</html>

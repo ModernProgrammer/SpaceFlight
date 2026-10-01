@@ -1,0 +1,82 @@
+{
+  "count": 9,
+  "next": null,
+  "previous": "https://api.spaceflightnewsapi.net/v4/articles/?limit=5",
+  "results": [
+    {
+      "id": 31005,
+      "title": "Space agency selects instruments for outer planet orbiter",
+      "authors": [],
+      "url": "https://news.example.com/europeanspaceflight/31005",
+      "image_url": "https://images.example.com/articles/31005.jpg",
+      "news_site": "European Spaceflight",
+      "summary": "Five instruments were selected from fourteen proposals.",
+      "published_at": "2025-03-13T22:11:09.2Z",
+      "updated_at": "2025-03-13T22:11:09.2Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    },
+    {
+      "id": 31004,
+      "title": "Crewed capsule splashes down after six-month mission",
+      "authors": [],
+      "url": "https://news.example.com/spacenews/31004",
+      "image_url": "https://images.example.com/articles/31004.jpg",
+      "news_site": "SpaceNews",
+      "summary": "Four crew members returned to Earth after 187 days aboard the station.",
+      "published_at": "2025-03-13T19:30:45Z",
+      "updated_at": "2025-03-13T19:30:45Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    },
+    {
+      "id": 31003,
+      "title": "Small launcher reaches orbit on third attempt",
+      "authors": [],
+      "url": "https://news.example.com/spaceflightnow/31003",
+      "image_url": "https://images.example.com/articles/31003.jpg",
+      "news_site": "Spaceflight Now",
+      "summary": "The company becomes the latest to place a payload into orbit with its own vehicle.",
+      "published_at": "2025-03-13T15:02:18Z",
+      "updated_at": "2025-03-13T15:02:18Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    },
+    {
+      "id": 31002,
+      "title": "Radar satellite begins science operations",
+      "authors": [],
+      "url": "https://news.example.com/nasaspaceflight/31002",
+      "image_url": "https://images.example.com/articles/31002.jpg",
+      "news_site": "NASASpaceflight",
+      "summary": "Commissioning finished two weeks ahead of schedule.",
+      "published_at": "2025-03-13T11:58:40.000001Z",
+      "updated_at": "2025-03-13T11:58:40.000001Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    },
+    {
+      "id": 31001,
+      "title": "Opinion: what a reusable upper stage would change",
+      "authors": [
+        {
+          "name": "Guest Columnist",
+          "socials": null
+        }
+      ],
+      "url": "https://news.example.com/spacenews/31001",
+      "image_url": "https://images.example.com/articles/31001.jpg",
+      "news_site": "SpaceNews",
+      "summary": "Full reuse remains the industry's hardest unsolved problem.",
+      "published_at": "2025-03-12T20:15:00Z",
+      "updated_at": "2025-03-12T20:15:00Z",
+      "featured": false,
+      "launches": [],
+      "events": []
+    }
+  ]
+}
